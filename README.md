@@ -53,10 +53,10 @@ La navegación permite diferenciar los accesos según el rol y la autenticación
 
 ## Requisitos Previos
 Asegúrate de tener instalado y configurado el siguiente entorno antes de ejecutar la aplicación:
-Node.js: Versión 18 o superior recomendada (tanto para el servidor como para el frontend).
-npm: Gestor de paquetes incluido con Node.js.
-MySQL Server: Motor de base de datos necesario para la persistencia de usuarios, noticias y reportes (ej. XAMPP, WampServer, o MySQL Workbench).
-Ionic CLI: Para gestionar el frontend, puedes instalarlo globalmente con:
+* **Node.js**: Versión 18 o superior recomendada (requerida tanto para el servidor backend como para el frontend).
+* **npm**: Gestor de paquetes incluido con la instalación de Node.js.
+* **MySQL Server**: Motor de base de datos necesario para la persistencia de usuarios, noticias y reportes. Puedes utilizar herramientas como XAMPP, WampServer o MySQL Workbench.
+* **Ionic CLI**: Utilizado para la gestión del frontend. Si no lo tienes instalado, puedes hacerlo globalmente ejecutando el siguiente comando en tu terminal:
 
-Bash
-npm install -g @ionic/cli
+  ```bash
+  npm install -g @ionic/cli
