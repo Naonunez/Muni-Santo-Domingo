@@ -39,10 +39,11 @@ El proyecto fue inicializado con **Ionic + React + TypeScript**.
 
 ## Estructura del Proyecto
 El código cuenta con una estructura modular para separar responsabilidades: 
-* `src/pages/`: Contiene las 13 vistas principales implementadas (Home, Noticias, Trámites, etc.). 
-* `src/components/`: Componentes reutilizables como Navbar, Footer y PrivateRoute. 
-* `src/routes/`: Contiene `AppRoutes.tsx` para la gestión centralizada de rutas. 
-* `src/services/`: Lógica para autenticación y consumo de API. 
+src/pages/: Contiene las vistas principales implementadas (Home, Noticias, Trámites, Login, Register, etc.).
+src/components/: Componentes reutilizables como Navbar, Footer y PrivateRoute.
+src/routes/: Contiene AppRoutes.tsx para la gestión centralizada de rutas y control de acceso.
+src/services/: Lógica centralizada para autenticación y consumo de API, incluyendo la configuración de Axios y los interceptores globales.
+backend/: Directorio raíz del servidor Node.js que gestiona la API REST, la conexión a la base de datos MySQL y la lógica de seguridad (encriptación con bcryptjs y generación de tokens JWT).
 
 ## Rutas Principales
 La navegación permite diferenciar los accesos según el rol y la autenticación: 
@@ -51,10 +52,11 @@ La navegación permite diferenciar los accesos según el rol y la autenticación
 * **Redirección:** Si no hay sesión activa, el sistema redirige automáticamente a `/login` al intentar acceder a vistas protegidas. 
 
 ## Requisitos Previos
+Asegúrate de tener instalado y configurado el siguiente entorno antes de ejecutar la aplicación:
+Node.js: Versión 18 o superior recomendada (tanto para el servidor como para el frontend).
+npm: Gestor de paquetes incluido con Node.js.
+MySQL Server: Motor de base de datos necesario para la persistencia de usuarios, noticias y reportes (ej. XAMPP, WampServer, o MySQL Workbench).
+Ionic CLI: Para gestionar el frontend, puedes instalarlo globalmente con:
 
-Asegúrate de tener instalado lo siguiente en tu entorno local antes de comenzar:
-* **Node.js** (versión 18 o superior recomendada)
-* **npm** (viene incluido con Node.js)
-* **Ionic CLI**: Si no lo tienes instalado, puedes hacerlo globalmente con el siguiente comando:
-  ```bash
-  npm install -g @ionic/cli
+Bash
+npm install -g @ionic/cli
