@@ -1,24 +1,54 @@
- import {
+import {
   IonPage, IonHeader, IonToolbar, IonTitle,
   IonContent, IonItem, IonLabel, IonInput,
-  IonButton, IonText
+  IonButton, IonText, IonToast
 } from '@ionic/react';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import api from '../services/api'; 
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
+  // Estados para manejar los errores visualmente
+  const [mensajeError, setMensajeError] = useState('');
+  const [mostrarToast, setMostrarToast] = useState(false);
+  
   const history = useHistory();
 
-  const handleLogin = () => {
-    // Por ahora simulamos login (en EP2 se conecta al backend)
-    if (email === 'admin@muni.cl' && password === '1234') {
-      localStorage.setItem('user', JSON.stringify({ email, role: 'admin' }));
-      history.push('/admin');
-    } else if (email && password) {
-      localStorage.setItem('user', JSON.stringify({ email, role: 'usuario' }));
-      history.push('/dashboard');
+  const handleLogin = async () => {
+    if (!email || !password) {
+      setMensajeError('Por favor ingresa tu correo y contraseña');
+      setMostrarToast(true);
+      return;
+    }
+
+    try {
+      // Mapeamos "email" y "password" a los nombres que espera tu base de datos
+      const respuesta = await api.post('/auth/login', {
+        correo: email,
+        contrasena: password
+      });
+
+      const { token, usuario } = respuesta.data;
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(usuario));
+
+      if (usuario.rol === 'administrador') {
+        history.push('/admin');
+      } else {
+        history.push('/dashboard');
+      }
+
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        setMensajeError(error.response.data.error);
+      } else {
+        setMensajeError('Error de conexión con el servidor');
+      }
+      setMostrarToast(true);
     }
   };
 
@@ -49,6 +79,15 @@ const Login: React.FC = () => {
         <IonButton expand="block" fill="outline" routerLink="/register">
           Registrarse
         </IonButton>
+
+        {/* Componente para mostrar alertas de error de forma elegante */}
+        <IonToast
+          isOpen={mostrarToast}
+          onDidDismiss={() => setMostrarToast(false)}
+          message={mensajeError}
+          duration={3000}
+          color="danger"
+        />
       </IonContent>
     </IonPage>
   );
