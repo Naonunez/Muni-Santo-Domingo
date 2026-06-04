@@ -39,11 +39,11 @@ El proyecto fue inicializado con **Ionic + React + TypeScript**.
 
 ## Estructura del Proyecto
 El código cuenta con una estructura modular para separar responsabilidades: 
-src/pages/: Contiene las vistas principales implementadas (Home, Noticias, Trámites, Login, Register, etc.).
-src/components/: Componentes reutilizables como Navbar, Footer y PrivateRoute.
-src/routes/: Contiene AppRoutes.tsx para la gestión centralizada de rutas y control de acceso.
-src/services/: Lógica centralizada para autenticación y consumo de API, incluyendo la configuración de Axios y los interceptores globales.
-backend/: Directorio raíz del servidor Node.js que gestiona la API REST, la conexión a la base de datos MySQL y la lógica de seguridad (encriptación con bcryptjs y generación de tokens JWT).
+* **src/pages/:** Contiene las vistas principales implementadas (Home, Noticias, Trámites, Login, Register, etc.).
+* **src/components/:** Componentes reutilizables como Navbar, Footer y PrivateRoute.
+* **src/routes/:** Contiene AppRoutes.tsx para la gestión centralizada de rutas y control de acceso.
+* **src/services/:** Lógica centralizada para autenticación y consumo de API, incluyendo la configuración de Axios y los interceptores globales.
+* **backend/:** Directorio raíz del servidor Node.js que gestiona la API REST, la conexión a la base de datos MySQL y la lógica de seguridad (encriptación con bcryptjs y generación de tokens JWT).
 
 ## Rutas Principales
 La navegación permite diferenciar los accesos según el rol y la autenticación: 
