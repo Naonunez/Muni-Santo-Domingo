@@ -2,10 +2,11 @@ import {
   IonPage, IonHeader, IonToolbar, IonTitle,
   IonContent, IonItem, IonLabel, IonInput,
   IonButton, IonText, IonCheckbox, IonSelect,
-  IonSelectOption
+  IonSelectOption, IonToast
 } from '@ionic/react';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import api from '../services/api'; // Importamos tu conexión real al backend
 
 const Register: React.FC = () => {
   const [nombre, setNombre] = useState('');
@@ -16,19 +17,56 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [terminos, setTerminos] = useState(false);
+  const [mensajeAlerta, setMensajeAlerta] = useState('');
+  const [colorAlerta, setColorAlerta] = useState<'danger' | 'success' | 'warning'>('danger');
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+
   const history = useHistory();
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
+    if (!nombre || !rut || !email || !region || !comuna || !password) {
+      mostrarToast('Por favor completa todos los campos', 'warning');
+      return;
+    }
     if (!terminos) {
-      alert('Debes aceptar los términos y condiciones');
+      mostrarToast('Debes aceptar los términos y condiciones', 'warning');
       return;
     }
     if (password !== confirmPassword) {
-      alert('Las contraseñas no coinciden');
+      mostrarToast('Las contraseñas no coinciden', 'danger');
       return;
     }
-    alert('Registro exitoso');
-    history.push('/login');
+
+    try {
+      await api.post('/auth/register', {
+        nombre: nombre,
+        rut: rut,
+        correo: email, 
+        region: region,
+        comuna: comuna,
+        contrasena: password, 
+        rol: 'ciudadano' 
+      });
+
+      mostrarToast('¡Registro exitoso! Ya puedes iniciar sesión.', 'success');
+      
+      setTimeout(() => {
+        history.push('/login');
+      }, 2000);
+
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        mostrarToast(error.response.data.error, 'danger');
+      } else {
+        mostrarToast('Error de conexión con el servidor', 'danger');
+      }
+    }
+  };
+
+  const mostrarToast = (texto: string, color: 'danger' | 'success' | 'warning') => {
+    setMensajeAlerta(texto);
+    setColorAlerta(color);
+    setMostrarAlerta(true);
   };
 
   return (
@@ -92,6 +130,15 @@ const Register: React.FC = () => {
         <IonButton expand="block" fill="outline" routerLink="/login">
           Ya tengo cuenta
         </IonButton>
+
+        {}
+        <IonToast
+          isOpen={mostrarAlerta}
+          onDidDismiss={() => setMostrarAlerta(false)}
+          message={mensajeAlerta}
+          duration={3000}
+          color={colorAlerta}
+        />
       </IonContent>
     </IonPage>
   );
