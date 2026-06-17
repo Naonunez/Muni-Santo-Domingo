@@ -2,17 +2,16 @@
 
 Plataforma digital para la Municipalidad de Santo Domingo que permite a los ciudadanos acceder a trámites, noticias, información turística y reportar problemas en la comuna. Los administradores municipales pueden gestionar contenido y revisar reportes desde un panel dedicado.
 
-## Integrantes
-
-| Nombre | Rol |
-|--------|-----|
-| Rouber Houter | Desarrollador Full Stack |
-| Naomi Ñuñez | Desarrolladora Full Stack |
-
 ## Paralelo
 ICI 4247 — Paralelo 1
 
 ---
+Integrantes:
+  - Naomi Nuñez
+  - Robert Houter
+  - Anibal Aravena
+
+Este proyecto corresponde a la del diseño y estructura inicial para la nueva plataforma de la Municipalidad de Santo Domingo. El objetivo principal es rediseñar y reimplementar la plataforma municipal como una aplicación móvil y web desarrollada con Ionic + React, priorizando la simplicidad, la accesibilidad y la claridad en la presentación de la información para los ciudadanos. 
 
 ## Enlaces del Proyecto
 
