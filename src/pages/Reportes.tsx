@@ -4,7 +4,7 @@ import {
   IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardContent,
   IonBadge, IonModal, IonItem, IonLabel, IonInput, IonTextarea,
   IonSelect, IonSelectOption, IonToast, IonSpinner, IonText,
-  IonButtons, IonBackButton, IonFab, IonFabButton, IonIcon,
+  IonButtons, IonBackButton, IonFab, IonFabButton, IonIcon, IonMenuButton,
 } from '@ionic/react';
 import { add } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
@@ -83,6 +83,7 @@ const Reportes: React.FC = () => {
       <IonHeader>
         <IonToolbar color="primary">
           <IonButtons slot="start">
+            <IonMenuButton />
             <IonBackButton defaultHref="/dashboard" />
           </IonButtons>
           <IonTitle>Mis Reportes</IonTitle>

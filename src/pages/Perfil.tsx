@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
   IonCard, IonCardContent, IonItem, IonLabel, IonSpinner,
-  IonToast, IonButtons, IonBackButton, IonText,
+  IonToast, IonButtons, IonBackButton, IonText, IonMenuButton,
 } from '@ionic/react';
 import api from '../services/api';
 
@@ -32,6 +32,7 @@ const Perfil: React.FC = () => {
       <IonHeader>
         <IonToolbar color="primary">
           <IonButtons slot="start">
+            <IonMenuButton />
             <IonBackButton defaultHref="/dashboard" />
           </IonButtons>
           <IonTitle>Mi Perfil</IonTitle>

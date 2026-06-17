@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const xss = require('xss');
 const { verificarToken, soloAdmin } = require('../middlewares/authMiddleware');
+const { enviarNotificacionEstado } = require('../services/email');
 
 // GET /api/reportes — admin ve todos, ciudadano ve los suyos
 router.get('/', verificarToken, (req, res) => {
@@ -45,7 +47,8 @@ router.get('/:id', verificarToken, (req, res) => {
 
 // POST /api/reportes — ciudadano crea reporte
 router.post('/', verificarToken, (req, res) => {
-    const { tipo_reporte, descripcion } = req.body;
+    const tipo_reporte = xss(req.body.tipo_reporte || '').trim();
+    const descripcion = xss(req.body.descripcion || '').trim();
 
     if (!tipo_reporte || !descripcion) {
         return res.status(400).json({ error: 'Tipo de reporte y descripción son obligatorios.' });
@@ -67,10 +70,27 @@ router.put('/:id/estado', verificarToken, soloAdmin, (req, res) => {
         return res.status(400).json({ error: `Estado inválido. Use: ${estadosValidos.join(', ')}` });
     }
 
-    const sql = 'UPDATE reportes SET estado = ? WHERE id = ?';
-    db.query(sql, [estado, req.params.id], (err, result) => {
+    const sqlUpdate = 'UPDATE reportes SET estado = ? WHERE id = ?';
+    db.query(sqlUpdate, [estado, req.params.id], (err, result) => {
         if (err) return res.status(500).json({ error: 'Error al actualizar el estado.' });
         if (result.affectedRows === 0) return res.status(404).json({ error: 'Reporte no encontrado.' });
+
+        // Notificar al ciudadano por email (no bloqueante)
+        const sqlInfo = `
+            SELECT r.tipo_reporte, u.correo, u.nombre
+            FROM reportes r JOIN usuarios u ON r.ciudadano_id = u.id
+            WHERE r.id = ?`;
+        db.query(sqlInfo, [req.params.id], (err2, rows) => {
+            if (!err2 && rows.length > 0) {
+                enviarNotificacionEstado({
+                    correo:      rows[0].correo,
+                    nombre:      rows[0].nombre,
+                    tipoReporte: rows[0].tipo_reporte,
+                    nuevoEstado: estado,
+                });
+            }
+        });
+
         res.status(200).json({ mensaje: 'Estado actualizado con éxito.' });
     });
 });

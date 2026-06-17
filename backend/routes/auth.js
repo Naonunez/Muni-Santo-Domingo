@@ -3,11 +3,18 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const xss = require('xss');
 const db = require('../db');
 
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
-    const { nombre, rut, correo, region, comuna, contrasena, rol } = req.body;
+    const nombre   = xss(req.body.nombre   || '').trim();
+    const rut      = xss(req.body.rut      || '').trim();
+    const correo   = xss(req.body.correo   || '').trim().toLowerCase();
+    const region   = xss(req.body.region   || '').trim();
+    const comuna   = xss(req.body.comuna   || '').trim();
+    const contrasena = req.body.contrasena || '';
+    const rol      = req.body.rol;
 
     if (!nombre || !rut || !correo || !region || !comuna || !contrasena) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios.' });

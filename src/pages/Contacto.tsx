@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { IonPage, IonContent } from '@ionic/react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
@@ -17,8 +18,11 @@ const markerIcon = new L.Icon({
 
 const MUNI_LAT = -33.6457;
 const MUNI_LNG = -71.6147;
+const TILE_URL = import.meta.env.VITE_MAP_TILE_URL || 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
 const Contacto: React.FC = () => {
+  const [mapaError, setMapaError] = useState(false);
+
   return (
     <IonPage>
       <IonContent>
@@ -108,24 +112,39 @@ const Contacto: React.FC = () => {
             Encuéntranos
           </h2>
           <div style={{ borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.12)', height: '420px' }}>
-            <MapContainer
-              center={[MUNI_LAT, MUNI_LNG]}
-              zoom={15}
-              style={{ height: '100%', width: '100%' }}
-              scrollWheelZoom={false}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={[MUNI_LAT, MUNI_LNG]} icon={markerIcon}>
-                <Popup>
-                  <strong>Municipalidad de Santo Domingo</strong><br />
-                  Av. Santa Teresa de Los Andes N° 1<br />
-                  Santo Domingo, Región de Valparaíso
-                </Popup>
-              </Marker>
-            </MapContainer>
+            {mapaError ? (
+              <div style={{
+                height: '100%', display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center',
+                background: '#f5f5f5', color: '#555', gap: '12px'
+              }}>
+                <span style={{ fontSize: '32px' }}>🗺️</span>
+                <p style={{ margin: 0, fontSize: '14px' }}>No se pudo cargar el mapa.</p>
+                <p style={{ margin: 0, fontSize: '13px', color: '#888' }}>
+                  Av. Santa Teresa de Los Andes N° 1, Santo Domingo
+                </p>
+              </div>
+            ) : (
+              <MapContainer
+                center={[MUNI_LAT, MUNI_LNG]}
+                zoom={15}
+                style={{ height: '100%', width: '100%' }}
+                scrollWheelZoom={false}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  url={TILE_URL}
+                  eventHandlers={{ tileerror: () => setMapaError(true) }}
+                />
+                <Marker position={[MUNI_LAT, MUNI_LNG]} icon={markerIcon}>
+                  <Popup>
+                    <strong>Municipalidad de Santo Domingo</strong><br />
+                    Av. Santa Teresa de Los Andes N° 1<br />
+                    Santo Domingo, Región de Valparaíso
+                  </Popup>
+                </Marker>
+              </MapContainer>
+            )}
           </div>
         </div>
 

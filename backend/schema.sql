@@ -32,8 +32,16 @@ CREATE TABLE reportes (
     estado VARCHAR(20) DEFAULT 'pendiente' CHECK (estado IN ('pendiente', 'en_revision', 'resuelto')),
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ciudadano_id INT NOT NULL,
-    CONSTRAINT fk_reportes_ciudadano 
-        FOREIGN KEY (ciudadano_id) 
-        REFERENCES usuarios(id) 
+    CONSTRAINT fk_reportes_ciudadano
+        FOREIGN KEY (ciudadano_id)
+        REFERENCES usuarios(id)
         ON DELETE CASCADE
 );
+
+-- Índices para mejorar rendimiento en consultas frecuentes
+CREATE INDEX idx_noticias_admin    ON noticias(administrador_id);
+CREATE INDEX idx_noticias_fecha    ON noticias(fecha_publicacion DESC);
+CREATE INDEX idx_reportes_ciudadano ON reportes(ciudadano_id);
+CREATE INDEX idx_reportes_estado   ON reportes(estado);
+CREATE INDEX idx_reportes_fecha    ON reportes(fecha_creacion DESC);
+CREATE INDEX idx_usuarios_correo   ON usuarios(correo);

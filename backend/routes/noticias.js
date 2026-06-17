@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const xss = require('xss');
 const { verificarToken, soloAdmin } = require('../middlewares/authMiddleware');
 
 // GET /api/noticias — público
@@ -24,7 +25,8 @@ router.get('/:id', (req, res) => {
 
 // POST /api/noticias — solo admin
 router.post('/', verificarToken, soloAdmin, (req, res) => {
-    const { titulo, contenido } = req.body;
+    const titulo = xss(req.body.titulo || '').trim();
+    const contenido = xss(req.body.contenido || '').trim();
 
     if (!titulo || !contenido) {
         return res.status(400).json({ error: 'Título y contenido son obligatorios.' });
@@ -39,7 +41,8 @@ router.post('/', verificarToken, soloAdmin, (req, res) => {
 
 // PUT /api/noticias/:id — solo admin
 router.put('/:id', verificarToken, soloAdmin, (req, res) => {
-    const { titulo, contenido } = req.body;
+    const titulo = xss(req.body.titulo || '').trim();
+    const contenido = xss(req.body.contenido || '').trim();
 
     if (!titulo || !contenido) {
         return res.status(400).json({ error: 'Título y contenido son obligatorios.' });

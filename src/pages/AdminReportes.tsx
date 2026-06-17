@@ -4,6 +4,7 @@ import {
   IonCard, IonCardHeader, IonCardTitle, IonCardContent,
   IonBadge, IonButton, IonSelect, IonSelectOption,
   IonToast, IonSpinner, IonText, IonButtons, IonBackButton, IonItem, IonLabel,
+  IonMenuButton,
 } from '@ionic/react';
 import api from '../services/api';
 
@@ -56,6 +57,7 @@ const AdminReportes: React.FC = () => {
       <IonHeader>
         <IonToolbar color="primary">
           <IonButtons slot="start">
+            <IonMenuButton />
             <IonBackButton defaultHref="/admin" />
           </IonButtons>
           <IonTitle>Gestión de Reportes</IonTitle>

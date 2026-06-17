@@ -263,11 +263,126 @@ Base URL: `http://localhost:5000/api`
 
 ---
 
+## Despliegue con Docker
+
+El proyecto incluye configuración Docker completa para levantar los tres servicios (base de datos, backend, frontend) con un solo comando.
+
+### Requisitos
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado y corriendo.
+
+### Variables de entorno
+
+Crear el archivo `.env` en la raíz del proyecto a partir del ejemplo:
+
+```bash
+cp backend/.env.example .env
+```
+
+Contenido mínimo requerido en `.env`:
+
+```env
+DB_USER=root
+DB_PASSWORD=muni_password_2024
+DB_NAME=muni_santo_domingo
+JWT_SECRET=clave_jwt_super_segura_minimo_32_chars
+
+# Opcional: configuración SMTP para notificaciones por email
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=tu_correo@gmail.com
+SMTP_PASS=tu_app_password
+```
+
+### Levantar el proyecto
+
+```bash
+docker-compose up --build
+```
+
+**Salida esperada al iniciar correctamente:**
+
+```
+[+] Building 18.5s (24/24) FINISHED
+[+] Running 3/3
+ ✔ Container muni_db        Healthy
+ ✔ Container muni_backend   Started
+ ✔ Container muni_frontend  Started
+
+muni_backend  | Servidor corriendo en http://localhost:5000
+```
+
+**URLs disponibles tras el despliegue:**
+
+| Servicio | URL |
+|----------|-----|
+| Frontend (Nginx) | http://localhost |
+| API REST | http://localhost:5000/api |
+| Base de datos MySQL | localhost:3306 |
+
+### Detener los servicios
+
+```bash
+docker-compose down
+```
+
+Para eliminar también los volúmenes (datos de la BD):
+
+```bash
+docker-compose down -v
+```
+
+### Arquitectura Docker
+
+```
+docker-compose.yml
+├── db          → MySQL 8.0 (puerto 3306) + healthcheck
+│                 init: backend/schema.sql (crea tablas e índices)
+├── backend     → Node.js 18 Alpine (puerto 5000)
+│                 depende de db (condición: healthy)
+└── frontend    → Nginx Alpine (puerto 80)
+                  multi-stage build: Vite → dist → Nginx
+                  proxy /api/* → backend:5000
+```
+
+---
+
 ## Seguridad Implementada
 
 - Contraseñas encriptadas con **bcryptjs** (10 rondas de salt).
 - Tokens **JWT** con expiración de 2 horas.
 - Middleware de autorización que valida token y rol en cada ruta protegida.
-- Consultas SQL parametrizadas para prevenir inyección SQL.
+- Consultas SQL **parametrizadas** — prevención de inyección SQL.
+- Sanitización de inputs con **xss** en backend — prevención de XSS almacenado.
+- Sanitización de contenido en frontend con **DOMPurify** al renderizar noticias.
 - Variables de entorno mediante `.env` (credenciales fuera del código fuente).
-- CORS configurado para aceptar solo el origen del frontend.
+- **CORS** configurado para aceptar solo el origen del frontend.
+- **Helmet.js** — cabeceras HTTP seguras (X-Frame-Options, X-Content-Type-Options, etc.).
+- **Rate limiting**: 100 req/IP/15min general; 10 req/IP/15min en `/auth`.
+- **Notificaciones por email** (Nodemailer/SMTP) al ciudadano cuando un reporte cambia de estado.
+
+---
+
+## Servicio Externo: Notificaciones por Email (Nodemailer)
+
+Cuando un administrador cambia el estado de un reporte, el sistema envía automáticamente un email HTML al ciudadano con el nuevo estado.
+
+**Configuración:**
+
+1. Crear una contraseña de aplicación en tu cuenta de Gmail (Seguridad → Contraseñas de aplicación).
+2. Agregar las credenciales al archivo `.env`:
+
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=tu_correo@gmail.com
+SMTP_PASS=contraseña_de_app_16_chars
+```
+
+3. Si no se configura SMTP, el sistema funciona igualmente — el envío de email es **no bloqueante** y falla silenciosamente registrando el error en consola.
+
+**Archivos relevantes:**
+- `backend/services/email.js` — servicio Nodemailer reutilizable.
+- `backend/routes/reportes.js` — llamada al servicio en `PUT /reportes/:id/estado`.

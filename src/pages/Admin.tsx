@@ -3,7 +3,7 @@ import {
   IonPage, IonHeader, IonToolbar, IonTitle,
   IonContent, IonButton, IonCard, IonCardHeader,
   IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol,
-  IonBadge, IonSpinner,
+  IonBadge, IonSpinner, IonMenuButton, IonButtons,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import api from '../services/api';
@@ -35,9 +35,12 @@ const Admin: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar color="primary">
+          <IonButtons slot="start">
+            <IonMenuButton />
+          </IonButtons>
           <IonTitle>Panel Administrador</IonTitle>
           <IonButton slot="end" fill="clear" onClick={handleLogout}>
-            Cerrar Sesión
+            Salir
           </IonButton>
         </IonToolbar>
       </IonHeader>
