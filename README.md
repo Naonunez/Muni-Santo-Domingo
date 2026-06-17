@@ -1,5 +1,10 @@
 # Municipalidad de Santo Domingo - Plataforma Web y Móvil
 
+Integrantes:
+  - Naomi Nuñez
+  - Robert Houter
+  - Anibal Aravena
+
 Este proyecto corresponde a la del diseño y estructura inicial para la nueva plataforma de la Municipalidad de Santo Domingo. El objetivo principal es rediseñar y reimplementar la plataforma municipal como una aplicación móvil y web desarrollada con Ionic + React, priorizando la simplicidad, la accesibilidad y la claridad en la presentación de la información para los ciudadanos. 
 
 ## Enlaces del Proyecto
