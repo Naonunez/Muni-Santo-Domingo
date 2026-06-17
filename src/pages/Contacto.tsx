@@ -1,6 +1,22 @@
 import { IonPage, IonContent } from '@ionic/react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+
+// Fix para los íconos del marcador en Leaflet con Vite
+const markerIcon = new L.Icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
+
+const MUNI_LAT = -33.6457;
+const MUNI_LNG = -71.6147;
 
 const Contacto: React.FC = () => {
   return (
@@ -83,6 +99,33 @@ const Contacto: React.FC = () => {
               </p>
             </div>
 
+          </div>
+        </div>
+
+        {/* Mapa interactivo */}
+        <div style={{ padding: '0 80px 60px', backgroundColor: '#fff' }}>
+          <h2 style={{ fontSize: '28px', fontWeight: '800', color: '#111', marginBottom: '24px', textAlign: 'center' }}>
+            Encuéntranos
+          </h2>
+          <div style={{ borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.12)', height: '420px' }}>
+            <MapContainer
+              center={[MUNI_LAT, MUNI_LNG]}
+              zoom={15}
+              style={{ height: '100%', width: '100%' }}
+              scrollWheelZoom={false}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[MUNI_LAT, MUNI_LNG]} icon={markerIcon}>
+                <Popup>
+                  <strong>Municipalidad de Santo Domingo</strong><br />
+                  Av. Santa Teresa de Los Andes N° 1<br />
+                  Santo Domingo, Región de Valparaíso
+                </Popup>
+              </Marker>
+            </MapContainer>
           </div>
         </div>
 

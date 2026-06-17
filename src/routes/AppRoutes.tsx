@@ -17,6 +17,11 @@ import PlanRegulador from '../pages/PlanRegulador';
 import InstrumentosPlanificacion from '../pages/PlanificacionTerritorial';
 import OrdenanzasMunicipales from '../pages/OrdenanzasMunicipales';
 import Contacto from '../pages/Contacto';
+import Reportes from '../pages/Reportes';
+import Perfil from '../pages/Perfil';
+import AdminNoticias from '../pages/AdminNoticias';
+import AdminUsuarios from '../pages/AdminUsuarios';
+import AdminReportes from '../pages/AdminReportes';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -38,8 +43,11 @@ const AppRoutes: React.FC = () => {
         <Route path="/plan-regulador/instrumentos" component={InstrumentosPlanificacion} exact />
         <Route path="/plan-regulador/ordenanzas" component={OrdenanzasMunicipales} exact />
         <Route path="/contacto" component={Contacto} exact />
-        
-        
+        <PrivateRoute path="/reportes" component={Reportes} exact />
+        <PrivateRoute path="/perfil" component={Perfil} exact />
+        <PrivateRoute path="/admin/noticias" component={AdminNoticias} role="admin" exact />
+        <PrivateRoute path="/admin/usuarios" component={AdminUsuarios} role="admin" exact />
+        <PrivateRoute path="/admin/reportes" component={AdminReportes} role="admin" exact />
       </IonRouterOutlet>
     </IonReactRouter>
   );

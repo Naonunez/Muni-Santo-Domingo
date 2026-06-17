@@ -1,0 +1,362 @@
+{
+  "info": {
+    "name": "Municipalidad de Santo Domingo - API",
+    "description": "Colección de endpoints REST para la plataforma web/móvil de la Municipalidad de Santo Domingo.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5000/api" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Registrar usuario",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/auth/register", "host": ["{{base_url}}"], "path": ["auth", "register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan Pérez\",\n  \"rut\": \"12345678-9\",\n  \"correo\": \"juan@example.com\",\n  \"region\": \"Valparaíso\",\n  \"comuna\": \"Santo Domingo\",\n  \"contrasena\": \"password123\",\n  \"rol\": \"ciudadano\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 - Registro exitoso",
+              "status": "Created",
+              "code": 201,
+              "body": "{ \"mensaje\": \"Usuario registrado con éxito.\" }"
+            },
+            {
+              "name": "400 - Campos faltantes",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{ \"error\": \"Todos los campos son obligatorios.\" }"
+            },
+            {
+              "name": "409 - RUT o correo duplicado",
+              "status": "Conflict",
+              "code": 409,
+              "body": "{ \"error\": \"El RUT o Correo ya están registrados.\" }"
+            }
+          ]
+        },
+        {
+          "name": "Iniciar sesión",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.token) { pm.collectionVariables.set('token', json.token); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"juan@example.com\",\n  \"contrasena\": \"password123\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 - Login exitoso",
+              "status": "OK",
+              "code": 200,
+              "body": "{ \"mensaje\": \"Inicio de sesión exitoso.\", \"token\": \"eyJ...\", \"usuario\": { \"id\": 1, \"nombre\": \"Juan Pérez\", \"rol\": \"ciudadano\" } }"
+            },
+            {
+              "name": "401 - Contraseña incorrecta",
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{ \"error\": \"Contraseña incorrecta.\" }"
+            },
+            {
+              "name": "404 - Usuario no encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{ \"error\": \"Usuario no encontrado.\" }"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Noticias",
+      "item": [
+        {
+          "name": "Listar noticias (público)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/noticias", "host": ["{{base_url}}"], "path": ["noticias"] }
+          },
+          "response": [
+            {
+              "name": "200 - Lista de noticias",
+              "status": "OK",
+              "code": 200,
+              "body": "[{ \"id\": 1, \"titulo\": \"Noticia\", \"contenido\": \"...\", \"fecha_publicacion\": \"2025-01-01\", \"autor\": \"Admin\" }]"
+            }
+          ]
+        },
+        {
+          "name": "Obtener noticia por ID (público)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/noticias/1", "host": ["{{base_url}}"], "path": ["noticias", "1"] }
+          },
+          "response": [
+            {
+              "name": "200 - Noticia encontrada",
+              "status": "OK",
+              "code": 200,
+              "body": "{ \"id\": 1, \"titulo\": \"Noticia\", \"contenido\": \"...\", \"autor\": \"Admin\" }"
+            },
+            {
+              "name": "404 - No encontrada",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{ \"error\": \"Noticia no encontrada.\" }"
+            }
+          ]
+        },
+        {
+          "name": "Crear noticia (solo admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/noticias", "host": ["{{base_url}}"], "path": ["noticias"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Nueva noticia municipal\",\n  \"contenido\": \"Contenido de la noticia...\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 - Creada",
+              "status": "Created",
+              "code": 201,
+              "body": "{ \"mensaje\": \"Noticia creada con éxito.\", \"id\": 3 }"
+            },
+            {
+              "name": "401 - Sin token",
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{ \"error\": \"Acceso denegado. Token no proporcionado.\" }"
+            },
+            {
+              "name": "403 - No es admin",
+              "status": "Forbidden",
+              "code": 403,
+              "body": "{ \"error\": \"Acceso restringido a administradores.\" }"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar noticia (solo admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/noticias/1", "host": ["{{base_url}}"], "path": ["noticias", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Título actualizado\",\n  \"contenido\": \"Contenido actualizado.\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 - Actualizada",
+              "status": "OK",
+              "code": 200,
+              "body": "{ \"mensaje\": \"Noticia actualizada con éxito.\" }"
+            }
+          ]
+        },
+        {
+          "name": "Eliminar noticia (solo admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/noticias/1", "host": ["{{base_url}}"], "path": ["noticias", "1"] }
+          },
+          "response": [
+            {
+              "name": "200 - Eliminada",
+              "status": "OK",
+              "code": 200,
+              "body": "{ \"mensaje\": \"Noticia eliminada con éxito.\" }"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Reportes",
+      "item": [
+        {
+          "name": "Listar reportes (requiere auth)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/reportes", "host": ["{{base_url}}"], "path": ["reportes"] }
+          },
+          "response": [
+            {
+              "name": "200 - Lista de reportes",
+              "status": "OK",
+              "code": 200,
+              "body": "[{ \"id\": 1, \"tipo_reporte\": \"Baches\", \"descripcion\": \"...\", \"estado\": \"pendiente\", \"ciudadano_nombre\": \"Juan\" }]"
+            }
+          ]
+        },
+        {
+          "name": "Crear reporte (ciudadano)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/reportes", "host": ["{{base_url}}"], "path": ["reportes"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo_reporte\": \"Baches y pavimento\",\n  \"descripcion\": \"Hay un bache grande en Av. Principal.\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "201 - Creado",
+              "status": "Created",
+              "code": 201,
+              "body": "{ \"mensaje\": \"Reporte enviado con éxito.\", \"id\": 5 }"
+            },
+            {
+              "name": "400 - Campos faltantes",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{ \"error\": \"Tipo de reporte y descripción son obligatorios.\" }"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar estado reporte (solo admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/reportes/1/estado", "host": ["{{base_url}}"], "path": ["reportes", "1", "estado"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"en_revision\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "200 - Estado actualizado",
+              "status": "OK",
+              "code": 200,
+              "body": "{ \"mensaje\": \"Estado actualizado con éxito.\" }"
+            },
+            {
+              "name": "400 - Estado inválido",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{ \"error\": \"Estado inválido. Use: pendiente, en_revision, resuelto\" }"
+            }
+          ]
+        },
+        {
+          "name": "Eliminar reporte",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/reportes/1", "host": ["{{base_url}}"], "path": ["reportes", "1"] }
+          },
+          "response": [
+            {
+              "name": "200 - Eliminado",
+              "status": "OK",
+              "code": 200,
+              "body": "{ \"mensaje\": \"Reporte eliminado con éxito.\" }"
+            },
+            {
+              "name": "403 - Sin permiso",
+              "status": "Forbidden",
+              "code": 403,
+              "body": "{ \"error\": \"No tienes permiso para eliminar este reporte.\" }"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Mi perfil (requiere auth)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/usuarios/perfil", "host": ["{{base_url}}"], "path": ["usuarios", "perfil"] }
+          },
+          "response": [
+            {
+              "name": "200 - Perfil del usuario",
+              "status": "OK",
+              "code": 200,
+              "body": "{ \"id\": 1, \"nombre\": \"Juan\", \"rut\": \"12345678-9\", \"correo\": \"juan@example.com\", \"region\": \"Valparaíso\", \"comuna\": \"Santo Domingo\", \"rol\": \"ciudadano\" }"
+            }
+          ]
+        },
+        {
+          "name": "Listar usuarios (solo admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/usuarios", "host": ["{{base_url}}"], "path": ["usuarios"] }
+          },
+          "response": [
+            {
+              "name": "200 - Lista de usuarios",
+              "status": "OK",
+              "code": 200,
+              "body": "[{ \"id\": 1, \"nombre\": \"Juan\", \"rol\": \"ciudadano\" }]"
+            }
+          ]
+        },
+        {
+          "name": "Estadísticas panel admin (solo admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/usuarios/stats", "host": ["{{base_url}}"], "path": ["usuarios", "stats"] }
+          },
+          "response": [
+            {
+              "name": "200 - Estadísticas",
+              "status": "OK",
+              "code": 200,
+              "body": "{ \"total_usuarios\": 24, \"reportes_pendientes\": 3, \"total_reportes\": 10, \"total_noticias\": 5 }"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

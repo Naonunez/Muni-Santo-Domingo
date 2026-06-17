@@ -1,62 +1,274 @@
-# Municipalidad de Santo Domingo - Plataforma Web y Móvil
+# Municipalidad de Santo Domingo — Plataforma Web y Móvil
 
-Este proyecto corresponde a la del diseño y estructura inicial para la nueva plataforma de la Municipalidad de Santo Domingo. El objetivo principal es rediseñar y reimplementar la plataforma municipal como una aplicación móvil y web desarrollada con Ionic + React, priorizando la simplicidad, la accesibilidad y la claridad en la presentación de la información para los ciudadanos. 
+Plataforma digital para la Municipalidad de Santo Domingo que permite a los ciudadanos acceder a trámites, noticias, información turística y reportar problemas en la comuna. Los administradores municipales pueden gestionar contenido y revisar reportes desde un panel dedicado.
+
+## Integrantes
+
+| Nombre | Rol |
+|--------|-----|
+| Rouber Houter | Desarrollador Full Stack |
+| Naomi Ñuñez | Desarrolladora Full Stack |
+
+## Paralelo
+ICI 4247 — Paralelo 1
+
+---
 
 ## Enlaces del Proyecto
-* **Figma :** [Ver aquí](https://www.figma.com/design/QW5Ckz607QPEtqWt8j32HG/Muni-Santo-Domingo?node-id=0-1&t=ZIbDiIUoXFRPuTRy-1)
-* **Figma (Prototipo Web):** [Ver aquí](https://www.figma.com/proto/QW5Ckz607QPEtqWt8j32HG/Muni-Santo-Domingo?node-id=54-2&starting-point-node-id=54%3A2&t=yMJ40qVSxXDD8G3O-1) 
-* **Figma (Prototipo Móvil):** [Ver aquí](https://www.figma.com/proto/QW5Ckz607QPEtqWt8j32HG/Muni-Santo-Domingo?node-id=9-4&p=f&t=yXDnBhj1tTYoMy85-1&scaling=min-zoom&content-scaling=fixed&page-id=4%3A3&starting-point-node-id=9%3A4)
 
-## Justificación y Usuarios
-La web oficial actual presenta una estructura de navegación compleja y una jerarquía visual confusa, lo cual genera barreras significativas, especialmente para adultos mayores y personas con baja alfabetización digital. El rediseño busca que cualquier ciudadano encuentre la información en pocos pasos. 
+- **Repositorio:** [https://github.com/Naonunez/Muni-Santo-Domingo](https://github.com/Naonunez/Muni-Santo-Domingo)
+- **Figma (Diseño):** [Ver diseño](https://www.figma.com/design/QW5Ckz607QPEtqWt8j32HG/Muni-Santo-Domingo?node-id=0-1&t=ZIbDiIUoXFRPuTRy-1)
+- **Figma (Prototipo Web):** [Ver prototipo web](https://www.figma.com/proto/QW5Ckz607QPEtqWt8j32HG/Muni-Santo-Domingo?node-id=54-2&starting-point-node-id=54%3A2&t=yMJ40qVSxXDD8G3O-1)
+- **Figma (Prototipo Móvil):** [Ver prototipo móvil](https://www.figma.com/proto/QW5Ckz607QPEtqWt8j32HG/Muni-Santo-Domingo?node-id=9-4&p=f&t=yXDnBhj1tTYoMy85-1&scaling=min-zoom&content-scaling=fixed&page-id=4%3A3&starting-point-node-id=9%3A4)
 
-**Perfiles de Usuario:**
-* **Ciudadano General (Adulto Mayor):** Usuario de 55 años o más, con nivel tecnológico básico, que busca trámites, noticias e información de contacto mediante una interfaz simple y con botones grandes. 
-* **Administrador Municipal:** Usuario de 25-50 años, con nivel tecnológico intermedio-avanzado, encargado de gestionar contenido, consultas y usuarios desde un panel ordenado. 
+---
 
-## Requerimientos Implementados
-**Funcionales (RF):**
-1. Gestión de trámites centralizada por unidades (Obras, DIMAO, Tránsito, Juzgado). 
-2. Trámites de beneficios (intermediario hacia dominio gubernamental). 
-3. Trámites de pago indexados de forma directa y legible. 
-4. Centralización de trámites de certificación. 
-5. Repositorio de información y transparencia municipal. 
-6. Guía turística interactiva adaptada a móviles. 
-7. Feed de noticias dinámico con ajuste visual. 
-8. Consulta del Plan Regulador Comunal (PRC). 
-9. Buscador global de contenidos con predicción. 
+## Stack Tecnológico
 
-**No Funcionales (RNF):**
-* **Seguridad:** Uso de JWT y validación de enlaces externos (.gob.cl) para evitar Phishing. 
-* **UI/UX:** Diseño adaptable (PC y Móvil) y panel de accesibilidad con Modo Oscuro y Escalado de Texto. 
-* **Rendimiento:** Tiempos de carga bajo los 2 segundos para páginas informativas y optimización de caché. 
+| Capa | Tecnología |
+|------|-----------|
+| Frontend | Ionic 8 + React 19 + TypeScript |
+| Backend | Node.js + Express 5 |
+| Base de Datos | MySQL |
+| Autenticación | JWT + bcryptjs |
+| HTTP Client | Axios |
+| Mobile | Capacitor |
 
-## Tecnologías y Arquitectura
-El proyecto fue inicializado con **Ionic + React + TypeScript**. 
-* **React Router:** Implementado mediante `IonReactRouter` e `IonRouterOutlet` para gestionar rutas públicas y protegidas de forma segura. 
-* **Autenticación (JWT):** Estándar seguro para el manejo de sesiones y gestión de roles (Ciudadano/Administrador). 
-* **Accesibilidad y UX:** Uso de hero images con texto grande, tipografía escalada en móviles (botones mínimo de 48px), y paleta institucional (#1a237e azul y blanco). 
+---
+
+## Justificación del Problema
+
+La web oficial de la Municipalidad de Santo Domingo presenta una estructura de navegación compleja y jerarquía visual confusa, lo que genera barreras para ciudadanos con baja alfabetización digital, especialmente adultos mayores. Esta plataforma rediseña la experiencia priorizando accesibilidad, simplicidad y tiempo de respuesta.
+
+**Usuarios objetivo:**
+- **Ciudadano (adulto mayor, 55+):** Nivel tecnológico básico. Necesita botones grandes, navegación simple y acceso directo a trámites y noticias.
+- **Administrador municipal (25–50 años):** Nivel tecnológico intermedio-avanzado. Gestiona contenido, reportes y usuarios desde un panel ordenado.
+
+---
+
+## Requerimientos Funcionales
+
+| # | Requerimiento | Rol |
+|---|--------------|-----|
+| RF1 | Visualizar noticias municipales publicadas | Ciudadano / Público |
+| RF2 | Crear, editar y eliminar noticias | Administrador |
+| RF3 | Crear reportes de problemas en la comuna (alumbrado, baches, etc.) | Ciudadano |
+| RF4 | Revisar y cambiar estado de reportes (pendiente → en revisión → resuelto) | Administrador |
+| RF5 | Registro de usuarios con RUT, correo, región y comuna | Ciudadano |
+| RF6 | Inicio de sesión con diferenciación de roles (ciudadano / administrador) | Ambos |
+| RF7 | Acceso a información de trámites municipales por dirección (Obras, DIMAO) | Público |
+| RF8 | Consulta del Plan Regulador Comunal y ordenanzas | Público |
+| RF9 | Guía turística interactiva (atractivos patrimoniales y naturales) | Público |
+| RF10 | Ver perfil personal con datos de cuenta | Ciudadano |
+
+## Requerimientos No Funcionales
+
+| # | Requerimiento | Tipo |
+|---|--------------|------|
+| RNF1 | Autenticación segura con JWT (expiración 2h) y hash bcrypt para contraseñas | Seguridad |
+| RNF2 | Rutas protegidas por rol en frontend y middleware de autorización en backend | Seguridad |
+| RNF3 | Diseño responsive adaptado a móvil y web con Ionic | Usabilidad |
+| RNF4 | Tiempos de carga bajo 2 segundos para páginas informativas | Rendimiento |
+
+---
 
 ## Estructura del Proyecto
-El código cuenta con una estructura modular para separar responsabilidades: 
-* **src/pages/:** Contiene las vistas principales implementadas (Home, Noticias, Trámites, Login, Register, etc.).
-* **src/components/:** Componentes reutilizables como Navbar, Footer y PrivateRoute.
-* **src/routes/:** Contiene AppRoutes.tsx para la gestión centralizada de rutas y control de acceso.
-* **src/services/:** Lógica centralizada para autenticación y consumo de API, incluyendo la configuración de Axios y los interceptores globales.
-* **backend/:** Directorio raíz del servidor Node.js que gestiona la API REST, la conexión a la base de datos MySQL y la lógica de seguridad (encriptación con bcryptjs y generación de tokens JWT).
 
-## Rutas Principales
-La navegación permite diferenciar los accesos según el rol y la autenticación: 
-* **Rutas Públicas:** `/home`, `/noticias`, `/contacto`, `/autoridades`, módulos de `/turismo`, `/tramites` y `/plan-regulador`, además de `/login` y `/register`. 
-* **Rutas Protegidas:** `/dashboard` (requiere rol Ciudadano) y `/admin` (requiere rol Administrador). 
-* **Redirección:** Si no hay sesión activa, el sistema redirige automáticamente a `/login` al intentar acceder a vistas protegidas. 
+```
+Muni-Santo-Domingo/
+├── src/                        # Frontend Ionic + React
+│   ├── pages/                  # Vistas de la aplicación
+│   ├── components/             # Navbar, Footer, PrivateRoute
+│   ├── routes/                 # AppRoutes.tsx
+│   └── services/               # api.ts (Axios + interceptores JWT)
+├── backend/                    # API REST Node.js + Express
+│   ├── routes/                 # auth.js | noticias.js | reportes.js | usuarios.js
+│   ├── middlewares/            # authMiddleware.js (JWT + roles)
+│   ├── db.js                   # Conexión MySQL
+│   ├── index.js                # Servidor principal
+│   ├── schema.sql              # Esquema de base de datos
+│   └── .env.example            # Variables de entorno de ejemplo
+└── otros/                      # Material adicional
+    └── postman_collection.json # Colección de pruebas de endpoints
+```
 
-## Requisitos Previos
-Asegúrate de tener instalado y configurado el siguiente entorno antes de ejecutar la aplicación:
-* **Node.js**: Versión 18 o superior recomendada (requerida tanto para el servidor backend como para el frontend).
-* **npm**: Gestor de paquetes incluido con la instalación de Node.js.
-* **MySQL Server**: Motor de base de datos necesario para la persistencia de usuarios, noticias y reportes. Puedes utilizar herramientas como XAMPP, WampServer o MySQL Workbench.
-* **Ionic CLI**: Utilizado para la gestión del frontend. Si no lo tienes instalado, puedes hacerlo globalmente ejecutando el siguiente comando en tu terminal:
+---
 
-  ```bash
-  npm install -g @ionic/cli
+## Instalación y Ejecución
+
+### Requisitos previos
+
+- Node.js 18+
+- MySQL Server (XAMPP, WampServer o MySQL Workbench)
+- npm (incluido con Node.js)
+
+---
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/Naonunez/Muni-Santo-Domingo.git
+cd Muni-Santo-Domingo
+```
+
+---
+
+### 2. Configurar la Base de Datos
+
+1. Abrir MySQL y ejecutar el archivo de esquema:
+
+```sql
+source backend/schema.sql
+```
+
+O bien, copiar y pegar el contenido de `backend/schema.sql` en MySQL Workbench / phpMyAdmin.
+
+2. Esto crea la base de datos `muni_santo_domingo` con las tablas: `usuarios`, `noticias` y `reportes`.
+
+---
+
+### 3. Configurar el Backend
+
+```bash
+cd backend
+```
+
+Crear el archivo `.env` a partir del ejemplo:
+
+```bash
+cp .env.example .env
+```
+
+Editar `.env` con tus credenciales MySQL:
+
+```env
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=tu_password
+DB_NAME=muni_santo_domingo
+JWT_SECRET=un_secreto_seguro
+```
+
+Instalar dependencias e iniciar el servidor:
+
+```bash
+npm install
+node index.js
+```
+
+El servidor estará disponible en: `http://localhost:5000`
+
+---
+
+### 4. Configurar el Frontend
+
+Desde la raíz del proyecto:
+
+```bash
+npm install
+npm run dev
+```
+
+La aplicación estará disponible en: `http://localhost:5173`
+
+---
+
+### 5. Crear un usuario administrador
+
+Para crear una cuenta con rol administrador, usar el endpoint de registro con Postman (ver colección en `otros/postman_collection.json`) o mediante la interfaz de la app enviando `"rol": "administrador"` en el cuerpo del registro.
+
+---
+
+## Rutas de la Aplicación
+
+### Rutas Públicas
+
+| Ruta | Vista |
+|------|-------|
+| `/home` | Página principal |
+| `/noticias` | Noticias municipales |
+| `/autoridades` | Autoridades y COSOC |
+| `/contacto` | Información de contacto |
+| `/login` | Inicio de sesión |
+| `/register` | Registro de ciudadano |
+| `/tramites/direccion-obras` | Dirección de Obras |
+| `/tramites/medio-ambiente` | DIMAO |
+| `/turismo/patrimonial` | Atractivos Patrimoniales |
+| `/turismo/naturales` | Atractivos Naturales |
+| `/plan-regulador/comunal` | Plan Regulador Comunal |
+| `/plan-regulador/ordenanzas` | Ordenanzas Municipales |
+| `/plan-regulador/instrumentos` | Instrumentos de Planificación |
+
+### Rutas Protegidas (requieren autenticación)
+
+| Ruta | Rol | Vista |
+|------|-----|-------|
+| `/dashboard` | Ciudadano | Panel ciudadano |
+| `/reportes` | Ciudadano / Admin | Gestión de reportes |
+| `/perfil` | Ciudadano | Perfil personal |
+| `/admin` | Administrador | Panel administrador |
+
+> Si el usuario no está autenticado, es redirigido automáticamente a `/login`.
+
+---
+
+## Endpoints de la API
+
+Base URL: `http://localhost:5000/api`
+
+### Autenticación
+
+| Método | Endpoint | Descripción | Auth |
+|--------|----------|-------------|------|
+| POST | `/auth/register` | Registrar usuario | No |
+| POST | `/auth/login` | Iniciar sesión | No |
+
+### Noticias
+
+| Método | Endpoint | Descripción | Auth |
+|--------|----------|-------------|------|
+| GET | `/noticias` | Listar noticias | No |
+| GET | `/noticias/:id` | Obtener noticia por ID | No |
+| POST | `/noticias` | Crear noticia | Admin |
+| PUT | `/noticias/:id` | Actualizar noticia | Admin |
+| DELETE | `/noticias/:id` | Eliminar noticia | Admin |
+
+### Reportes
+
+| Método | Endpoint | Descripción | Auth |
+|--------|----------|-------------|------|
+| GET | `/reportes` | Listar reportes (propios o todos si admin) | Sí |
+| GET | `/reportes/:id` | Obtener reporte por ID | Sí |
+| POST | `/reportes` | Crear reporte | Sí |
+| PUT | `/reportes/:id/estado` | Cambiar estado del reporte | Admin |
+| DELETE | `/reportes/:id` | Eliminar reporte | Sí |
+
+### Usuarios
+
+| Método | Endpoint | Descripción | Auth |
+|--------|----------|-------------|------|
+| GET | `/usuarios/perfil` | Ver perfil propio | Sí |
+| GET | `/usuarios` | Listar todos los usuarios | Admin |
+| GET | `/usuarios/stats` | Estadísticas del panel admin | Admin |
+
+> La colección completa de Postman con ejemplos y casos de error está en `otros/postman_collection.json`.
+
+---
+
+## Pruebas con Postman
+
+1. Importar `otros/postman_collection.json` en Postman.
+2. Ejecutar **"Iniciar sesión"** — el token JWT se guarda automáticamente en la variable `{{token}}`.
+3. Los demás endpoints que requieren autenticación usarán ese token.
+
+---
+
+## Seguridad Implementada
+
+- Contraseñas encriptadas con **bcryptjs** (10 rondas de salt).
+- Tokens **JWT** con expiración de 2 horas.
+- Middleware de autorización que valida token y rol en cada ruta protegida.
+- Consultas SQL parametrizadas para prevenir inyección SQL.
+- Variables de entorno mediante `.env` (credenciales fuera del código fuente).
+- CORS configurado para aceptar solo el origen del frontend.

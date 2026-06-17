@@ -14,7 +14,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, role,
   return (
     <Route {...rest} render={props => {
       if (!user) return <Redirect to="/login" />;
-      if (role && user.role !== role) return <Redirect to="/dashboard" />;
+      if (role === 'admin' && user.rol !== 'administrador') return <Redirect to="/dashboard" />;
       return <Component {...props} />;
     }} />
   );
