@@ -48,14 +48,15 @@ router.get('/:id', verificarToken, (req, res) => {
 // POST /api/reportes — ciudadano crea reporte
 router.post('/', verificarToken, (req, res) => {
     const tipo_reporte = xss(req.body.tipo_reporte || '').trim();
-    const descripcion = xss(req.body.descripcion || '').trim();
+    const descripcion  = xss(req.body.descripcion  || '').trim();
+    const direccion    = xss(req.body.direccion     || '').trim() || null;
 
     if (!tipo_reporte || !descripcion) {
         return res.status(400).json({ error: 'Tipo de reporte y descripción son obligatorios.' });
     }
 
-    const sql = 'INSERT INTO reportes (tipo_reporte, descripcion, ciudadano_id) VALUES (?, ?, ?)';
-    db.query(sql, [tipo_reporte, descripcion, req.usuario.id], (err, result) => {
+    const sql = 'INSERT INTO reportes (tipo_reporte, descripcion, direccion, ciudadano_id) VALUES (?, ?, ?, ?)';
+    db.query(sql, [tipo_reporte, descripcion, direccion, req.usuario.id], (err, result) => {
         if (err) return res.status(500).json({ error: 'Error al crear el reporte.' });
         res.status(201).json({ mensaje: 'Reporte enviado con éxito.', id: result.insertId });
     });
@@ -70,8 +71,10 @@ router.put('/:id/estado', verificarToken, soloAdmin, (req, res) => {
         return res.status(400).json({ error: `Estado inválido. Use: ${estadosValidos.join(', ')}` });
     }
 
-    const sqlUpdate = 'UPDATE reportes SET estado = ? WHERE id = ?';
-    db.query(sqlUpdate, [estado, req.params.id], (err, result) => {
+    const comentario_admin = xss(req.body.comentario_admin || '').trim() || null;
+
+    const sqlUpdate = 'UPDATE reportes SET estado = ?, comentario_admin = ? WHERE id = ?';
+    db.query(sqlUpdate, [estado, comentario_admin, req.params.id], (err, result) => {
         if (err) return res.status(500).json({ error: 'Error al actualizar el estado.' });
         if (result.affectedRows === 0) return res.status(404).json({ error: 'Reporte no encontrado.' });
 

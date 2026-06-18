@@ -1,0 +1,28 @@
+/* ─── Tamaño de texto ─────────────────────────────────── */
+html.acc-fuente-md { font-size: 112.5%; }
+html.acc-fuente-lg { font-size: 125%; }
+
+/* ─── Alto contraste ─────────────────────────────────── */
+html.acc-contraste {
+  filter: contrast(1.5) brightness(0.95);
+}
+html.acc-contraste body {
+  background-color: #000 !important;
+}
+
+/* ─── Escala de grises ───────────────────────────────── */
+html.acc-grises {
+  filter: grayscale(1);
+}
+
+/* ─── Combinar filtros ───────────────────────────────── */
+html.acc-contraste.acc-grises {
+  filter: contrast(1.5) brightness(0.95) grayscale(1);
+}
+
+/* ─── Subrayar enlaces ───────────────────────────────── */
+html.acc-enlaces a,
+html.acc-enlaces span[role="link"],
+html.acc-enlaces [onClick] {
+  text-decoration: underline !important;
+}

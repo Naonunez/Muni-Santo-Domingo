@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IonPage, IonContent, IonSpinner } from '@ionic/react';
-import DOMPurify from 'dompurify';
+import { useHistory } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import api from '../services/api';
@@ -9,12 +9,13 @@ interface Noticia {
   id: number;
   titulo: string;
   contenido: string;
+  imagen?: string;
   fecha_publicacion: string;
   autor: string;
 }
 
 const CACHE_KEY = 'noticias_cache';
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+const CACHE_TTL = 5 * 60 * 1000;
 
 function leerCache(): Noticia[] | null {
   try {
@@ -23,39 +24,41 @@ function leerCache(): Noticia[] | null {
     const { data, timestamp } = JSON.parse(raw);
     if (Date.now() - timestamp > CACHE_TTL) return null;
     return data;
-  } catch {
-    return null;
-  }
+  } catch { return null; }
 }
 
 function guardarCache(data: Noticia[]) {
-  try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
-  } catch {
-    // localStorage lleno — continuar sin cache
-  }
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() })); }
+  catch { /* localStorage lleno */ }
 }
 
-const LADOS = ['derecha', 'izquierda'] as const;
+function extractText(html: string, maxLen = 160): string {
+  const plain = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  return plain.length > maxLen ? plain.slice(0, maxLen) + '…' : plain;
+}
+
+/* ── Estilos de tarjeta ── */
+const cardBase: React.CSSProperties = {
+  backgroundColor: '#fff',
+  borderRadius: '10px',
+  boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
+  transition: 'box-shadow 0.2s, transform 0.2s',
+};
 
 const Noticias: React.FC = () => {
-  const [noticias, setNoticias]   = useState<Noticia[]>([]);
-  const [cargando, setCargando]   = useState(true);
-  const [error, setError]         = useState(false);
+  const history = useHistory();
+  const [noticias, setNoticias] = useState<Noticia[]>([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError]       = useState(false);
 
   useEffect(() => {
     const cache = leerCache();
-    if (cache) {
-      setNoticias(cache);
-      setCargando(false);
-      return;
-    }
-
+    if (cache) { setNoticias(cache); setCargando(false); return; }
     api.get<Noticia[]>('/noticias')
-      .then((res) => {
-        setNoticias(res.data);
-        guardarCache(res.data);
-      })
+      .then(res => { setNoticias(res.data); guardarCache(res.data); })
       .catch(() => setError(true))
       .finally(() => setCargando(false));
   }, []);
@@ -68,19 +71,19 @@ const Noticias: React.FC = () => {
         {/* Hero */}
         <div style={{
           position: 'relative', width: '100%', height: '400px',
-          overflow: 'hidden', borderBottomRightRadius: '60px'
+          overflow: 'hidden', borderBottomRightRadius: '60px',
         }}>
           <img
             src="/images/noticias_front.jpeg"
             alt="Noticias"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
-          <div style={{ position: 'absolute', bottom: '50px', left: '60px', color: '#fff' }}>
-            <h1 style={{
-              fontSize: '52px', fontWeight: '900', margin: 0,
-              textShadow: '2px 2px 8px rgba(0,0,0,0.5)'
-            }}>Noticias</h1>
-            <p style={{ fontSize: '15px', maxWidth: '400px', marginTop: '10px', textShadow: '1px 1px 4px rgba(0,0,0,0.5)' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(10,20,80,0.72) 40%, rgba(10,20,80,0.15) 100%)' }} />
+          <div style={{ position: 'absolute', bottom: '50px', left: '60px', color: '#fff', maxWidth: '520px' }}>
+            <h1 style={{ fontSize: '3rem', fontWeight: 900, margin: '0 0 0.5rem', lineHeight: 1.1, textShadow: '2px 2px 8px rgba(0,0,0,0.4)' }}>
+              Noticias
+            </h1>
+            <p style={{ fontSize: '1rem', margin: 0, lineHeight: 1.6, opacity: 0.9, textShadow: '1px 1px 4px rgba(0,0,0,0.4)' }}>
               Entérate de lo que ocurre en la Comuna y comparte con tus vecinos
               toda la información de actividades y novedades comunales.
             </p>
@@ -88,77 +91,83 @@ const Noticias: React.FC = () => {
         </div>
 
         {/* Contenido */}
-        <div style={{ padding: '40px 60px' }}>
+        <div style={{ padding: '3rem 3.75rem', backgroundColor: '#f9f9f9' }}>
+
           {cargando && (
-            <div style={{ textAlign: 'center', padding: '60px 0' }}>
+            <div style={{ textAlign: 'center', padding: '3rem 0' }}>
               <IonSpinner name="crescent" />
             </div>
           )}
 
           {error && !cargando && (
-            <div style={{ textAlign: 'center', padding: '60px 0', color: '#666' }}>
+            <div style={{ textAlign: 'center', padding: '3rem 0', color: '#666', fontSize: '0.9375rem' }}>
               <p>No se pudieron cargar las noticias. Intenta más tarde.</p>
             </div>
           )}
 
           {!cargando && !error && noticias.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '60px 0', color: '#666' }}>
+            <div style={{ textAlign: 'center', padding: '3rem 0', color: '#666', fontSize: '0.9375rem' }}>
               <p>No hay noticias publicadas aún.</p>
             </div>
           )}
 
-          {!cargando && noticias.map((noticia, i) => {
-            const lado = LADOS[i % 2];
-            return (
-              <div key={noticia.id} style={{
-                display: 'flex',
-                flexDirection: lado === 'izquierda' ? 'row' : 'row-reverse',
-                gap: '40px',
-                alignItems: 'flex-start',
-                marginBottom: '60px',
-                flexWrap: 'wrap',
-              }}>
-                {/* Texto */}
-                <div style={{
-                  flex: 1, minWidth: '280px',
-                  backgroundColor: '#f0f0f0',
-                  borderRadius: '16px',
-                  padding: '40px'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                    <div style={{ width: '30px', height: '2px', backgroundColor: '#e53935' }} />
-                    <span style={{ color: '#e53935', fontSize: '13px', fontWeight: '600' }}>Noticias</span>
+          {!cargando && !error && noticias.length > 0 && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
+              {noticias.map(noticia => (
+                <div
+                  key={noticia.id}
+                  style={{ ...cardBase, cursor: 'pointer' }}
+                  onClick={() => history.push(`/noticias/${noticia.id}`)}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 24px rgba(0,0,0,0.14)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 12px rgba(0,0,0,0.08)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
+                >
+                  {/* Imagen o placeholder */}
+                  <div style={{ height: '200px', overflow: 'hidden', flexShrink: 0 }}>
+                    {noticia.imagen ? (
+                      <img
+                        src={noticia.imagen}
+                        alt={noticia.titulo}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.3s' }}
+                        onMouseEnter={e => ((e.currentTarget as HTMLImageElement).style.transform = 'scale(1.04)')}
+                        onMouseLeave={e => ((e.currentTarget as HTMLImageElement).style.transform = 'scale(1)')}
+                      />
+                    ) : (
+                      <div style={{
+                        width: '100%', height: '100%',
+                        background: 'linear-gradient(135deg, #1565c0 0%, #1a237e 100%)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>
+                        <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '4rem', fontWeight: 900 }}>
+                          {noticia.titulo.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                  <p style={{ fontSize: '11px', color: '#999', margin: '0 0 12px' }}>
-                    {new Date(noticia.fecha_publicacion).toLocaleDateString('es-CL')} — {noticia.autor}
-                  </p>
-                  <h2 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '16px', lineHeight: 1.4 }}>
-                    {noticia.titulo}
-                  </h2>
-                  <div
-                    style={{ color: '#444', fontSize: '14px', lineHeight: '1.7', marginBottom: '20px' }}
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(noticia.contenido)
-                    }}
-                  />
-                </div>
 
-                {/* Imagen placeholder con inicial */}
-                <div style={{
-                  flex: 1, minWidth: '240px',
-                  height: '260px',
-                  borderRadius: lado === 'izquierda' ? '16px 16px 16px 60px' : '16px 16px 60px 16px',
-                  background: 'linear-gradient(135deg, #1a237e 0%, #3949ab 100%)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  border: lado === 'izquierda' ? '3px solid #1a237e' : 'none',
-                }}>
-                  <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: '80px', fontWeight: '900' }}>
-                    {noticia.titulo.charAt(0).toUpperCase()}
-                  </span>
+                  {/* Cuerpo */}
+                  <div style={{ padding: '1.25rem 1.375rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <div style={{ width: '1.5rem', height: '2px', backgroundColor: '#e53935' }} />
+                      <span style={{ color: '#e53935', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Noticias</span>
+                      <span style={{ marginLeft: 'auto', color: '#999', fontSize: '0.75rem' }}>
+                        {new Date(noticia.fecha_publicacion).toLocaleDateString('es-CL')}
+                      </span>
+                    </div>
+                    <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, lineHeight: 1.4, color: '#1a1a2e' }}>
+                      {noticia.titulo}
+                    </h3>
+                    <p style={{ margin: 0, fontSize: '0.875rem', color: '#555', lineHeight: 1.65, flex: 1 }}>
+                      {extractText(noticia.contenido)}
+                    </p>
+                    <span style={{ marginTop: '0.5rem', color: '#1565c0', fontSize: '0.875rem', fontWeight: 600 }}>
+                      Ver más →
+                    </span>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              ))}
+            </div>
+          )}
+
         </div>
 
         <Footer />

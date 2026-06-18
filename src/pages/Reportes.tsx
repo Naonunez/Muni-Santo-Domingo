@@ -7,16 +7,16 @@ import {
   IonButtons, IonBackButton, IonFab, IonFabButton, IonIcon, IonMenuButton,
 } from '@ionic/react';
 import { add } from 'ionicons/icons';
-import { useHistory } from 'react-router-dom';
 import api from '../services/api';
 
 interface Reporte {
   id: number;
   tipo_reporte: string;
   descripcion: string;
+  direccion?: string;
+  comentario_admin?: string;
   estado: 'pendiente' | 'en_revision' | 'resuelto';
   fecha_creacion: string;
-  ciudadano_nombre?: string;
 }
 
 const colorEstado = (estado: string) => {
@@ -26,14 +26,14 @@ const colorEstado = (estado: string) => {
 };
 
 const Reportes: React.FC = () => {
-  const [reportes, setReportes] = useState<Reporte[]>([]);
-  const [cargando, setCargando] = useState(true);
+  const [reportes, setReportes]     = useState<Reporte[]>([]);
+  const [cargando, setCargando]     = useState(true);
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [tipoReporte, setTipoReporte] = useState('');
-  const [descripcion, setDescripcion] = useState('');
+  const [tipoReporte, setTipoReporte]   = useState('');
+  const [descripcion, setDescripcion]   = useState('');
+  const [direccion, setDireccion]       = useState('');
   const [toast, setToast] = useState({ abierto: false, mensaje: '', color: 'success' });
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const history = useHistory();
 
   const cargarReportes = async () => {
     setCargando(true);
@@ -47,21 +47,20 @@ const Reportes: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    cargarReportes();
-  }, []);
+  useEffect(() => { cargarReportes(); }, []);
 
   const enviarReporte = async () => {
     if (!tipoReporte || !descripcion) {
-      setToast({ abierto: true, mensaje: 'Completa todos los campos.', color: 'warning' });
+      setToast({ abierto: true, mensaje: 'Completa tipo y descripción.', color: 'warning' });
       return;
     }
     try {
-      await api.post('/reportes', { tipo_reporte: tipoReporte, descripcion });
+      await api.post('/reportes', { tipo_reporte: tipoReporte, descripcion, direccion });
       setToast({ abierto: true, mensaje: 'Reporte enviado con éxito.', color: 'success' });
       setModalAbierto(false);
       setTipoReporte('');
       setDescripcion('');
+      setDireccion('');
       cargarReportes();
     } catch {
       setToast({ abierto: true, mensaje: 'Error al enviar el reporte.', color: 'danger' });
@@ -92,9 +91,7 @@ const Reportes: React.FC = () => {
 
       <IonContent className="ion-padding">
         {cargando ? (
-          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-            <IonSpinner />
-          </div>
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}><IonSpinner /></div>
         ) : reportes.length === 0 ? (
           <IonText>
             <p style={{ textAlign: 'center', marginTop: '2rem', color: '#666' }}>
@@ -105,25 +102,38 @@ const Reportes: React.FC = () => {
           reportes.map((r) => (
             <IonCard key={r.id}>
               <IonCardHeader>
-                <IonCardTitle style={{ fontSize: '1rem' }}>
+                <IonCardTitle style={{ fontSize: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   {r.tipo_reporte}
-                  <IonBadge color={colorEstado(r.estado)} style={{ marginLeft: '0.5rem' }}>
+                  <IonBadge color={colorEstado(r.estado)}>
                     {r.estado.replace('_', ' ')}
                   </IonBadge>
                 </IonCardTitle>
               </IonCardHeader>
               <IonCardContent>
-                <p>{r.descripcion}</p>
-                <p style={{ fontSize: '0.8rem', color: '#888' }}>
+                <p style={{ margin: '0 0 4px', fontSize: '0.9rem' }}>{r.descripcion}</p>
+                {r.direccion && (
+                  <p style={{ margin: '0 0 4px', fontSize: '0.8rem', color: '#555' }}>
+                    📍 {r.direccion}
+                  </p>
+                )}
+                <p style={{ fontSize: '0.75rem', color: '#888', margin: '0 0 8px' }}>
                   {new Date(r.fecha_creacion).toLocaleDateString('es-CL')}
                 </p>
+                {r.comentario_admin && (
+                  <div style={{
+                    background: '#e8f5e9', borderLeft: '3px solid #43a047',
+                    borderRadius: '4px', padding: '8px 12px', marginBottom: '8px',
+                  }}>
+                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#2e7d32', fontWeight: 600 }}>
+                      Respuesta municipal
+                    </p>
+                    <p style={{ margin: '4px 0 0', fontSize: '0.85rem', color: '#333' }}>
+                      {r.comentario_admin}
+                    </p>
+                  </div>
+                )}
                 {user.rol !== 'administrador' && (
-                  <IonButton
-                    size="small"
-                    color="danger"
-                    fill="outline"
-                    onClick={() => eliminarReporte(r.id)}
-                  >
+                  <IonButton size="small" color="danger" fill="outline" onClick={() => eliminarReporte(r.id)}>
                     Eliminar
                   </IonButton>
                 )}
@@ -160,12 +170,16 @@ const Reportes: React.FC = () => {
               </IonSelect>
             </IonItem>
             <IonItem>
-              <IonLabel position="floating">Descripción</IonLabel>
-              <IonTextarea
-                value={descripcion}
-                onIonChange={(e) => setDescripcion(e.detail.value!)}
-                rows={4}
+              <IonLabel position="floating">Dirección / Ubicación (opcional)</IonLabel>
+              <IonInput
+                value={direccion}
+                onIonChange={(e) => setDireccion(e.detail.value!)}
+                placeholder="Ej: Calle Los Boldos 123"
               />
+            </IonItem>
+            <IonItem>
+              <IonLabel position="floating">Descripción</IonLabel>
+              <IonTextarea value={descripcion} onIonChange={(e) => setDescripcion(e.detail.value!)} rows={4} />
             </IonItem>
             <IonButton expand="block" className="ion-margin-top" onClick={enviarReporte}>
               Enviar Reporte

@@ -51,96 +51,167 @@ const Autoridades: React.FC = () => {
 
         {/* Hero */}
         <div style={{
-          position: 'relative', width: '100%', height: '400px',
+          position: 'relative', width: '100%', height: '420px',
           overflow: 'hidden', borderBottomRightRadius: '60px'
         }}>
           <img
             src="/images/autoridades.jpeg"
             alt="Autoridades Municipales"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%' }}
           />
-          <div style={{
-            position: 'absolute', bottom: '40px', left: '60px', color: '#fff'
-          }}>
-            <h1 style={{ fontSize: '48px', fontWeight: '900', margin: 0, lineHeight: 1.1, textShadow: '2px 2px 8px rgba(0,0,0,0.5)' }}>
-              Autoridades
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(10,20,80,0.72) 40%, rgba(10,20,80,0.15) 100%)' }} />
+          <div style={{ position: 'absolute', bottom: '50px', left: '60px', color: '#fff', maxWidth: '520px' }}>
+            <h1 style={{ fontSize: '3rem', fontWeight: 900, margin: '0 0 0.5rem', lineHeight: 1.1, textShadow: '2px 2px 8px rgba(0,0,0,0.4)' }}>
+              Autoridades Municipales
             </h1>
-            <h1 style={{ fontSize: '48px', fontWeight: '900', margin: 0, lineHeight: 1.1, textShadow: '2px 2px 8px rgba(0,0,0,0.5)' }}>
-              Municipales
-            </h1>
-            <p style={{ margin: '10px 0 0 0', fontSize: '16px', textShadow: '1px 1px 4px rgba(0,0,0,0.5)' }}>
+            <p style={{ margin: 0, fontSize: '1rem', lineHeight: 1.6, textShadow: '1px 1px 4px rgba(0,0,0,0.4)', opacity: 0.9 }}>
               Conozca nuestro municipio y autoridades.
             </p>
           </div>
         </div>
 
         {/* Alcalde */}
-        <div style={{
-          padding: '60px', display: 'flex', gap: '60px',
-          alignItems: 'center', justifyContent: 'center'
-        }}>
-          <div style={{ flex: 1, maxWidth: '450px' }}>
-            <h2 style={{ fontSize: '36px', marginBottom: '16px' }}>Alcalde</h2>
-            <p style={{ margin: '4px 0' }}><strong>Fernando Rodríguez Larraín</strong></p>
-            <p style={{ color: '#555', margin: '4px 0' }}>Ingeniero Agrónomo.</p>
-            <p style={{ color: '#555', margin: '12px 0' }}>
-              Alcalde de Santo Domingo durante los años 2008 al 2021 y por el periodo actual 2024 – 2028
-            </p>
-            <p style={{ color: '#555', margin: '4px 0' }}>Padre de cinco hijos.</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px', maxWidth: '220px' }}>
-              <button style={{
-                backgroundColor: '#1a237e', color: '#fff', padding: '12px 20px',
-                border: 'none', borderRadius: '4px', cursor: 'pointer', textAlign: 'left'
-              }}>Cuenta Pública 2021 →</button>
-              <button style={{
-                backgroundColor: '#1a237e', color: '#fff', padding: '12px 20px',
-                border: 'none', borderRadius: '4px', cursor: 'pointer', textAlign: 'left'
-              }}>Cuenta Pública 2022 →</button>
+        <div style={{ backgroundColor: '#fff', padding: '4rem 5rem' }}>
+          <div style={{
+            maxWidth: '960px', margin: '0 auto',
+            display: 'flex', gap: '4rem', alignItems: 'flex-start',
+          }}>
+
+            {/* Imagen */}
+            <div style={{ flex: '0 0 auto', position: 'relative' }}>
+              <img
+                src="/images/alcalde.jpeg"
+                alt="Alcalde Fernando Rodríguez Larraín"
+                style={{
+                  width: '280px', height: '360px',
+                  objectFit: 'cover', objectPosition: 'center center',
+                  borderRadius: '12px',
+                  boxShadow: '0 8px 32px rgba(21,101,192,0.18)',
+                  display: 'block',
+                }}
+              />
+              {/* Badge sobre la imagen */}
+              <div style={{
+                position: 'absolute', bottom: '16px', left: '50%',
+                transform: 'translateX(-50%)',
+                backgroundColor: '#1565c0', color: '#fff',
+                padding: '6px 18px', borderRadius: '20px',
+                fontSize: '0.75rem', fontWeight: 700, whiteSpace: 'nowrap',
+                letterSpacing: '0.5px',
+              }}>
+                Alcalde 2024 – 2028
+              </div>
             </div>
-          </div>
-          <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-            <img
-              src="/images/alcalde.jpeg"
-              alt="Alcalde"
-              style={{ width: '100%', maxWidth: '350px', borderRadius: '12px' }}
-            />
+
+            {/* Texto */}
+            <div style={{ flex: 1 }}>
+              <p style={{
+                fontSize: '0.75rem', fontWeight: 700, color: '#1565c0',
+                letterSpacing: '1.5px', textTransform: 'uppercase',
+                margin: '0 0 0.5rem',
+              }}>
+                Autoridad Municipal
+              </p>
+
+              <h2 style={{
+                fontSize: '2.25rem', fontWeight: 900, lineHeight: 1.1,
+                color: '#1a237e', margin: '0 0 0.25rem',
+              }}>
+                Alcalde
+              </h2>
+
+              <h3 style={{
+                fontSize: '1.25rem', fontWeight: 700, color: '#222',
+                margin: '0 0 1.25rem', lineHeight: 1.3,
+              }}>
+                Fernando Rodríguez Larraín
+              </h3>
+
+              <div style={{ width: '48px', height: '3px', backgroundColor: '#1565c0', borderRadius: '2px', marginBottom: '1.25rem' }} />
+
+              <p style={{ color: '#444', margin: '0 0 0.6rem', fontSize: '0.9375rem', lineHeight: 1.75 }}>
+                <strong>Profesión:</strong> Ingeniero Agrónomo.
+              </p>
+              <p style={{ color: '#444', margin: '0 0 0.6rem', fontSize: '0.9375rem', lineHeight: 1.75 }}>
+                <strong>Trayectoria:</strong> Alcalde de Santo Domingo durante los años 2008 al 2021 y por el periodo actual 2024 – 2028.
+              </p>
+              <p style={{ color: '#444', margin: '0 0 1.75rem', fontSize: '0.9375rem', lineHeight: 1.75 }}>
+                Padre de cinco hijos.
+              </p>
+
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <a href="https://santodomingo.cl/wp-content/uploads/2023/06/cuenta_publica_sd_2021.pdf"
+                  target="_blank" rel="noopener noreferrer"
+                  style={{
+                    backgroundColor: '#1565c0', color: '#fff',
+                    padding: '0.625rem 1.25rem', borderRadius: '4px',
+                    fontSize: '0.875rem', fontWeight: 600, textDecoration: 'none',
+                    display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                  }}>
+                  <i className="cl cl-document-verified" style={{ fontSize: '1rem' }} />
+                  Cuenta Pública 2021
+                </a>
+                <a href="https://santodomingo.cl/wp-content/uploads/2023/06/cuenta-publica-2022.pdf"
+                  target="_blank" rel="noopener noreferrer"
+                  style={{
+                    backgroundColor: '#1565c0', color: '#fff',
+                    padding: '0.625rem 1.25rem', borderRadius: '4px',
+                    fontSize: '0.875rem', fontWeight: 600, textDecoration: 'none',
+                    display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                  }}>
+                  <i className="cl cl-document-verified" style={{ fontSize: '1rem' }} />
+                  Cuenta Pública 2022
+                </a>
+              </div>
+            </div>
+
           </div>
         </div>
 
         {/* Concejo Municipal */}
-        <div style={{ padding: '40px 60px', backgroundColor: '#f9f9f9' }}>
-          <h2 style={{ textAlign: 'center', marginBottom: '8px', fontSize: '28px' }}>Concejo Municipal</h2>
-          <p style={{ textAlign: 'center', color: '#555', marginBottom: '40px' }}>
+        <div style={{ padding: '60px 80px', backgroundColor: '#f9f9f9' }}>
+          <h2 style={{ textAlign: 'center', marginBottom: '0.5rem', fontSize: '1.75rem', color: '#1a237e' }}>Concejo Municipal</h2>
+          <p style={{ textAlign: 'center', color: '#666', marginBottom: '2.5rem', fontSize: '0.9375rem' }}>
             A continuación presentamos a nuestros concejales:
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '28px' }}>
             {concejales.map((c, i) => (
-              <div key={i} style={{ textAlign: 'center' }}>
+              <div key={i} style={{ textAlign: 'center', backgroundColor: '#fff', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 2px 10px rgba(0,0,0,0.07)' }}>
                 <img src={c.img} alt={c.nombre}
-                  style={{ width: '100%', height: '220px', objectFit: 'cover', borderRadius: '8px' }} />
-                <h3 style={{ margin: '12px 0 4px', fontSize: '16px' }}>{c.nombre}</h3>
-                <p style={{ color: '#555', fontSize: '13px', margin: '4px 0' }}>{c.desc}</p>
-                <p style={{ color: '#1a237e', fontSize: '13px', margin: '4px 0' }}>{c.email}</p>
+                  style={{ width: '100%', height: '240px', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
+                <div style={{ padding: '16px' }}>
+                  <h3 style={{ margin: '0 0 6px', fontSize: '0.9375rem', fontWeight: 700, color: '#1a237e' }}>{c.nombre}</h3>
+                  <p style={{ color: '#555', fontSize: '0.8125rem', margin: '0 0 6px', lineHeight: 1.5 }}>{c.desc}</p>
+                  <p style={{ color: '#1565c0', fontSize: '0.8125rem', margin: 0 }}>{c.email}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
         {/* Transmisión Concejo */}
-        <div style={{ padding: '60px', textAlign: 'center' }}>
-          <h2 style={{ marginBottom: '8px', fontSize: '28px' }}>Transmisión Concejo Municipal</h2>
-          <p style={{ color: '#1a237e', fontWeight: 'bold', marginBottom: '20px' }}>
-            Revisa el concejo online
-          </p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '40px' }}>
-            <button style={{
-              backgroundColor: '#1a237e', color: '#fff', padding: '12px 24px',
-              border: 'none', borderRadius: '4px', cursor: 'pointer'
-            }}>Tabla De Concejos Municipales</button>
-            <button style={{
-              backgroundColor: '#1a237e', color: '#fff', padding: '12px 24px',
-              border: 'none', borderRadius: '4px', cursor: 'pointer'
-            }}>Ver Concejos Anteriores ▶</button>
+        <div style={{ padding: '3.75rem', textAlign: 'center' }}>
+          <h2 style={{ marginBottom: '8px', fontSize: '1.75rem', color: '#1a237e' }}>Transmisión Concejo Municipal</h2>
+          <a href="https://sites.google.com/santodomingo.cl/concejomunicipalsantodomingo/inicio"
+            target="_blank" rel="noopener noreferrer"
+            style={{ color: '#1565c0', fontWeight: 700, marginBottom: '24px', display: 'inline-block', fontSize: '0.9375rem', textDecoration: 'none' }}
+            onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.textDecoration = 'underline')}
+            onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.textDecoration = 'none')}>
+            Revisa el concejo online →
+          </a>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginBottom: '40px', flexWrap: 'wrap' }}>
+            <a href="https://sites.google.com/santodomingo.cl/concejomunicipalsantodomingo/inicio"
+              target="_blank" rel="noopener noreferrer"
+              style={{ backgroundColor: '#1565c0', color: '#fff', padding: '12px 24px', borderRadius: '4px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.875rem', fontWeight: 600 }}>
+              <i className="cl cl-youtube" style={{ fontSize: '1.125rem' }} />
+              Tabla De Concejos Municipales
+            </a>
+            <a href="https://www.youtube.com/@concejomunicipalsantodomingo/streams"
+              target="_blank" rel="noopener noreferrer"
+              style={{ backgroundColor: '#1565c0', color: '#fff', padding: '0.75rem 1.5rem', borderRadius: '4px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600 }}>
+              <i className="cl cl-document-verified" style={{ fontSize: '1.125rem' }} />
+              Ver Concejos Anteriores
+            </a>
           </div>
 
           {/* COSOC - imagen izquierda, texto derecha */}
@@ -151,15 +222,15 @@ const Autoridades: React.FC = () => {
             textAlign: 'left', maxWidth: '900px', margin: '0 auto'
           }}>
             <img src="/images/cosoc.jpeg" alt="COSOC"
-              style={{ width: '220px', height: '160px', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }} />
+              style={{ width: '13.75rem', height: '10rem', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }} />
             <div>
-              <h3 style={{ marginBottom: '12px' }}>Consejo De Sociedad Civil</h3>
-              <p style={{ fontSize: '13px', lineHeight: '1.8' }}>
+              <h3 style={{ marginBottom: '0.75rem', fontSize: '1.125rem' }}>Consejo De Sociedad Civil</h3>
+              <p style={{ fontSize: '0.8125rem', lineHeight: '1.8', margin: 0 }}>
                 Organismo de participación ciudadana de la Municipalidad de Santo Domingo que reemplaza
                 al Consejo Económico Social Comunal (CESCO) y cuyo objetivo es asegurar la colaboración
                 y participación de la comunidad local en el progreso económico, social y cultural de la comuna.
               </p>
-              <p style={{ fontSize: '13px', lineHeight: '1.8', marginTop: '10px' }}>
+              <p style={{ fontSize: '0.8125rem', lineHeight: '1.8', marginTop: '0.625rem', marginBottom: 0 }}>
                 El Consejo Comunal de las Organizaciones de la Sociedad Civil será presidido por el Alcalde,
                 desempeñándose como ministro de fe el Secretario Municipal.
               </p>
@@ -168,50 +239,54 @@ const Autoridades: React.FC = () => {
         </div>
 
         {/* Funciones COSOC */}
-        <div style={{ padding: '60px', backgroundColor: '#fff' }}>
-          <h2 style={{ textAlign: 'center', marginBottom: '30px', fontSize: '26px' }}>
+        <div style={{ padding: '3.75rem', backgroundColor: '#fff' }}>
+          <h2 style={{ textAlign: 'center', marginBottom: '1.875rem', fontSize: '1.625rem', color: '#1a237e' }}>
             Funciones Del Consejo De Sociedad Civil COSOC
           </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px 40px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem 2.5rem' }}>
             {funcionesCOSOC.map((f, i) => (
-              <p key={i} style={{ color: '#333', fontSize: '14px', lineHeight: '1.7', margin: 0 }}>{f}</p>
+              <p key={i} style={{ color: '#333', fontSize: '0.875rem', lineHeight: '1.7', margin: 0 }}>{f}</p>
             ))}
           </div>
         </div>
 
         {/* Integrantes COSOC */}
-        <div style={{ padding: '60px', backgroundColor: '#f9f9f9' }}>
-          <h2 style={{ textAlign: 'center', marginBottom: '30px', fontSize: '26px' }}>
+        <div style={{ padding: '3.75rem', backgroundColor: '#f9f9f9' }}>
+          <h2 style={{ textAlign: 'center', marginBottom: '1.875rem', fontSize: '1.625rem', color: '#1a237e' }}>
             Integrantes Del Consejo De Sociedad Civil COSOC
           </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 60px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem 3.75rem' }}>
             {integrantes.map((item, i) => (
-              <p key={i} style={{ fontSize: '14px', margin: 0 }}>
+              <p key={i} style={{ fontSize: '0.875rem', margin: 0, lineHeight: 1.6 }}>
                 <strong>{item.nombre}:</strong> {item.org}
               </p>
             ))}
           </div>
-          <div style={{ textAlign: 'center', marginTop: '30px' }}>
-            <button style={{
-              backgroundColor: '#1a237e', color: '#fff', padding: '12px 24px',
-              border: 'none', borderRadius: '4px', cursor: 'pointer'
-            }}>Decreto Miembros COSOC Periodo 2022 Al 2026</button>
+          <div style={{ textAlign: 'center', marginTop: '1.875rem' }}>
+            <a href="https://santodomingo.cl/wp-content/uploads/2023/06/decreto_2022_2025-COSOC.pdf"
+              target="_blank" rel="noopener noreferrer"
+              style={{ backgroundColor: '#1565c0', color: '#fff', padding: '0.75rem 1.5rem', borderRadius: '4px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600 }}>
+              <i className="cl cl-document-verified" style={{ fontSize: '1rem' }} />
+              Decreto Miembros COSOC Periodo 2022 Al 2026
+            </a>
           </div>
         </div>
 
         {/* Funcionamiento Interno */}
-        <div style={{ padding: '60px', backgroundColor: '#fff' }}>
-          <h2 style={{ fontSize: '28px', marginBottom: '20px' }}>Funcionamiento Interno</h2>
-          <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
-            <p style={{ flex: 1, color: '#555', fontSize: '14px', lineHeight: '1.7' }}>
+        <div style={{ padding: '3.75rem', backgroundColor: '#fff' }}>
+          <h2 style={{ fontSize: '1.75rem', marginBottom: '1.25rem', color: '#1a237e' }}>Funcionamiento Interno</h2>
+          <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'flex-start' }}>
+            <p style={{ flex: 1, color: '#555', fontSize: '0.9375rem', lineHeight: '1.7', margin: 0 }}>
               El objetivo de un buen funcionamiento interno municipal, es garantizar la eficiencia y la eficacia
               en la prestación de los servicios y desarrollo de actividades que se le entregan a la comunidad.
               Ordenamos este funcionamiento en el reglamento interno.
             </p>
-            <button style={{
-              backgroundColor: '#1a237e', color: '#fff', padding: '12px 24px',
-              border: 'none', borderRadius: '4px', cursor: 'pointer', whiteSpace: 'nowrap'
-            }}>Reglamento Interno</button>
+            <a href="https://santodomingo.cl/wp-content/uploads/2023/07/reglamento-interno-2019-decreto-alcaldicio-No27_01.pdf"
+              target="_blank" rel="noopener noreferrer"
+              style={{ backgroundColor: '#1565c0', color: '#fff', padding: '0.75rem 1.5rem', borderRadius: '4px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 600, whiteSpace: 'nowrap' }}>
+              <i className="cl cl-document-verified" style={{ fontSize: '1rem' }} />
+              Reglamento Interno
+            </a>
           </div>
         </div>
 

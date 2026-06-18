@@ -25,15 +25,16 @@ router.get('/:id', (req, res) => {
 
 // POST /api/noticias — solo admin
 router.post('/', verificarToken, soloAdmin, (req, res) => {
-    const titulo = xss(req.body.titulo || '').trim();
+    const titulo   = xss(req.body.titulo   || '').trim();
     const contenido = xss(req.body.contenido || '').trim();
+    const imagen   = xss(req.body.imagen   || '').trim() || null;
 
     if (!titulo || !contenido) {
         return res.status(400).json({ error: 'Título y contenido son obligatorios.' });
     }
 
-    const sql = 'INSERT INTO noticias (titulo, contenido, administrador_id) VALUES (?, ?, ?)';
-    db.query(sql, [titulo, contenido, req.usuario.id], (err, result) => {
+    const sql = 'INSERT INTO noticias (titulo, contenido, imagen, administrador_id) VALUES (?, ?, ?, ?)';
+    db.query(sql, [titulo, contenido, imagen, req.usuario.id], (err, result) => {
         if (err) return res.status(500).json({ error: 'Error al crear la noticia.' });
         res.status(201).json({ mensaje: 'Noticia creada con éxito.', id: result.insertId });
     });
@@ -41,15 +42,16 @@ router.post('/', verificarToken, soloAdmin, (req, res) => {
 
 // PUT /api/noticias/:id — solo admin
 router.put('/:id', verificarToken, soloAdmin, (req, res) => {
-    const titulo = xss(req.body.titulo || '').trim();
+    const titulo   = xss(req.body.titulo   || '').trim();
     const contenido = xss(req.body.contenido || '').trim();
+    const imagen   = xss(req.body.imagen   || '').trim() || null;
 
     if (!titulo || !contenido) {
         return res.status(400).json({ error: 'Título y contenido son obligatorios.' });
     }
 
-    const sql = 'UPDATE noticias SET titulo = ?, contenido = ? WHERE id = ?';
-    db.query(sql, [titulo, contenido, req.params.id], (err, result) => {
+    const sql = 'UPDATE noticias SET titulo = ?, contenido = ?, imagen = ? WHERE id = ?';
+    db.query(sql, [titulo, contenido, imagen, req.params.id], (err, result) => {
         if (err) return res.status(500).json({ error: 'Error al actualizar la noticia.' });
         if (result.affectedRows === 0) return res.status(404).json({ error: 'Noticia no encontrada.' });
         res.status(200).json({ mensaje: 'Noticia actualizada con éxito.' });

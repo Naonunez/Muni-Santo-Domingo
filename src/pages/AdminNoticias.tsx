@@ -13,6 +13,7 @@ interface Noticia {
   id: number;
   titulo: string;
   contenido: string;
+  imagen?: string;
   fecha_publicacion: string;
   autor?: string;
 }
@@ -24,6 +25,7 @@ const AdminNoticias: React.FC = () => {
   const [editando, setEditando] = useState<Noticia | null>(null);
   const [titulo, setTitulo] = useState('');
   const [contenido, setContenido] = useState('');
+  const [imagen, setImagen] = useState('');
   const [alertaBorrar, setAlertaBorrar] = useState<number | null>(null);
   const [toast, setToast] = useState({ abierto: false, mensaje: '', color: 'success' });
 
@@ -48,6 +50,7 @@ const AdminNoticias: React.FC = () => {
     setEditando(null);
     setTitulo('');
     setContenido('');
+    setImagen('');
     setModalAbierto(true);
   };
 
@@ -55,6 +58,7 @@ const AdminNoticias: React.FC = () => {
     setEditando(n);
     setTitulo(n.titulo);
     setContenido(n.contenido);
+    setImagen(n.imagen || '');
     setModalAbierto(true);
   };
 
@@ -65,10 +69,10 @@ const AdminNoticias: React.FC = () => {
     }
     try {
       if (editando) {
-        await api.put(`/noticias/${editando.id}`, { titulo, contenido });
+        await api.put(`/noticias/${editando.id}`, { titulo, contenido, imagen });
         mostrarToast('Noticia actualizada.', 'success');
       } else {
-        await api.post('/noticias', { titulo, contenido });
+        await api.post('/noticias', { titulo, contenido, imagen });
         mostrarToast('Noticia creada.', 'success');
       }
       setModalAbierto(false);
@@ -145,6 +149,10 @@ const AdminNoticias: React.FC = () => {
             <IonItem>
               <IonLabel position="floating">Título</IonLabel>
               <IonInput value={titulo} onIonChange={(e) => setTitulo(e.detail.value!)} />
+            </IonItem>
+            <IonItem>
+              <IonLabel position="floating">URL de imagen (opcional)</IonLabel>
+              <IonInput value={imagen} onIonChange={(e) => setImagen(e.detail.value!)} placeholder="https://..." />
             </IonItem>
             <IonItem>
               <IonLabel position="floating">Contenido</IonLabel>

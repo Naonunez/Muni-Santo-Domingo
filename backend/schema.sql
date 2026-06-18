@@ -17,13 +17,17 @@ CREATE TABLE noticias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(200) NOT NULL,
     contenido TEXT NOT NULL,
+    imagen VARCHAR(500) DEFAULT NULL,
     fecha_publicacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     administrador_id INT NOT NULL,
-    CONSTRAINT fk_noticias_admin 
-        FOREIGN KEY (administrador_id) 
-        REFERENCES usuarios(id) 
+    CONSTRAINT fk_noticias_admin
+        FOREIGN KEY (administrador_id)
+        REFERENCES usuarios(id)
         ON DELETE CASCADE
 );
+
+-- Migración para bases de datos existentes:
+-- ALTER TABLE noticias ADD COLUMN imagen VARCHAR(500) DEFAULT NULL;
 
 CREATE TABLE reportes (
     id INT AUTO_INCREMENT PRIMARY KEY,

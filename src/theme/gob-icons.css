@@ -1,0 +1,55 @@
+/* Fuente de íconos — Framework Digital Gobierno de Chile */
+@font-face {
+  font-family: gob-cl;
+  src: url('/fonts/gob-cl/gob-cl.woff2') format('woff2'),
+       url('/fonts/gob-cl/gob-cl.woff')  format('woff'),
+       url('/fonts/gob-cl/gob-cl.ttf')   format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.cl {
+  font-family: gob-cl !important;
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  line-height: 1;
+  speak: none;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accesibilidad y navegación */
+.cl-accessibility::before  { content: "\ea01"; }
+.cl-arrow-left::before     { content: "\ea04"; }
+.cl-arrow-right::before    { content: "\ea06"; }
+.cl-close-line::before     { content: "\ea0f"; }
+.cl-close::before          { content: "\ea10"; }
+.cl-contrast::before       { content: "\ea12"; }
+.cl-currency-cycle::before { content: "\ea13"; }
+.cl-img-preview::before    { content: "\ea1b"; }
+.cl-increase-text::before  { content: "\ea1c"; }
+.cl-m-arrow-down::before   { content: "\ea22"; }
+.cl-m-arrow-left::before   { content: "\ea23"; }
+.cl-m-arrow-right::before  { content: "\ea24"; }
+.cl-m-arrow-up::before     { content: "\ea25"; }
+.cl-reading::before        { content: "\ea2c"; }
+.cl-search::before         { content: "\ea2d"; }
+
+/* Navbar utilitarios */
+.cl-touch-screen::before   { content: "\ea32"; }
+.cl-give-letter::before    { content: "\ea1a"; }
+.cl-question::before       { content: "\ea2b"; }
+.cl-telephone::before      { content: "\ea30"; }
+.cl-call-info::before      { content: "\ea0d"; }
+
+/* Documentos */
+.cl-document-verified::before { content: "\ea16"; }
+
+/* Redes sociales */
+.cl-facebook::before       { content: "\ea18"; }
+.cl-instagram::before      { content: "\ea1d"; }
+.cl-twitter::before        { content: "\ea33"; }
+.cl-youtube::before        { content: "\ea35"; }

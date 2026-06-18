@@ -33,19 +33,24 @@ const Footer: React.FC = () => {
         <div>
           <h4 style={{ marginBottom: '15px', fontSize: '15px' }}>Transparencia</h4>
           {[
-            'Plataforma Ley Lobby',
-            'Solicitud Ley de Transparencia',
-            'Transparencia Activa',
-            'Consejo Municipal en VIVO',
-            'Registro de Organizaciones Comunitarias',
-            'Constituciones y Elecciones Organizaciones Comunitarias'
+            { label: 'Plataforma Ley Lobby',                                          href: 'https://www.leylobby.gob.cl/instituciones/MU309' },
+            { label: 'Solicitud Ley de Transparencia',                                href: 'https://www.portaltransparencia.cl/PortalPdT/ingreso-sai-v2?idOrg=725' },
+            { label: 'Transparencia Activa',                                          href: 'https://www.portaltransparencia.cl/PortalPdT/directorio-de-organismos-regulados/?org=MU309' },
+            { label: 'Consejo Municipal en VIVO',                                     href: 'https://sites.google.com/santodomingo.cl/concejomunicipalsantodomingo/inicio', highlight: true },
+            { label: 'Registro de Organizaciones Comunitarias',                       href: 'https://www.portaltransparencia.cl/PortalPdT/directorio-de-organismos-regulados/?org=MU309&pagina=57519561' },
+            { label: 'Constituciones y Elecciones Organizaciones Comunitarias',       href: 'https://www.portaltransparencia.cl/PortalPdT/directorio-de-organismos-regulados/?org=MU309&pagina=57519347' },
+            { label: 'Decretos',                                                       href: 'https://datastudio.google.com/u/0/reporting/ae44bf6d-9318-481f-8ec1-b897380a0eed/page/q5BIF' },
           ].map((item, i) => (
-            <p key={i} style={{
+            <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" style={{
+              display: 'block',
               fontSize: '13px',
               margin: '6px 0',
-              cursor: 'pointer',
-              color: i === 3 ? '#ffeb3b' : '#fff'
-            }}>{item}</p>
+              color: item.highlight ? '#ffeb3b' : '#fff',
+              textDecoration: 'none',
+            }}
+            onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.textDecoration = 'underline')}
+            onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.textDecoration = 'none')}
+            >{item.label}</a>
           ))}
         </div>
 
@@ -53,14 +58,19 @@ const Footer: React.FC = () => {
         <div>
           <h4 style={{ marginBottom: '15px', fontSize: '15px' }}>Links</h4>
           {[
-            'Subsidios',
-            'Beneficios',
-            'Pagos',
-            'Certificados',
-            'Web Anterior',
-            'Gestor Documental'
+            { label: 'Geoportal / SIG', href: 'https://geoportal-santodomingo.hub.arcgis.com/' },
+            { label: 'Subsidios',       href: '#' },
+            { label: 'Beneficios',      href: '#' },
+            { label: 'Pagos',           href: '#' },
+            { label: 'Certificados',    href: '#' },
+            { label: 'Web Anterior',      href: 'https://webanterior.santodomingo.cl/' },
+            { label: 'Gestor Documental', href: 'https://santodomingo.api-ux.com/docux/' },
           ].map((item, i) => (
-            <p key={i} style={{ fontSize: '13px', margin: '6px 0', cursor: 'pointer' }}>{item}</p>
+            <a key={i} href={item.href} target={item.href !== '#' ? '_blank' : undefined} rel="noopener noreferrer"
+              style={{ display: 'block', fontSize: '13px', margin: '6px 0', color: '#fff', textDecoration: 'none', cursor: 'pointer' }}
+              onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.textDecoration = 'underline')}
+              onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.textDecoration = 'none')}
+            >{item.label}</a>
           ))}
         </div>
 
@@ -72,14 +82,27 @@ const Footer: React.FC = () => {
           </p>
           <img src="/images/sumate.jpeg" alt="Súmate" style={{ width: '120px', borderRadius: '8px', marginBottom: '15px' }} />
           <div style={{ display: 'flex', gap: '12px' }}>
-            {['Facebook', 'Instagram', 'YouTube', 'Twitter'].map((red, i) => (
-              <div key={i} style={{
-                backgroundColor: 'rgba(255,255,255,0.2)',
-                padding: '6px 10px',
-                borderRadius: '4px',
-                fontSize: '12px',
-                cursor: 'pointer'
-              }}>{red[0]}</div>
+            {[
+              { icon: 'cl-facebook',  label: 'Facebook',  href: 'https://web.facebook.com/santodomingocl' },
+              { icon: 'cl-instagram', label: 'Instagram', href: 'https://www.instagram.com/santodomingocl/' },
+              { icon: 'cl-youtube',   label: 'YouTube',   href: 'https://www.youtube.com/@santodomingopuntocl' },
+              { icon: 'cl-twitter',   label: 'Twitter',   href: 'https://x.com/santodomingocl' },
+            ].map((red, i) => (
+              <a key={i} href={red.href} target="_blank" rel="noopener noreferrer" title={red.label}
+                style={{
+                  width: '38px', height: '38px',
+                  backgroundColor: 'rgba(255,255,255,0.2)',
+                  borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: '#fff', textDecoration: 'none', fontSize: '18px',
+                  transition: 'background-color 0.2s',
+                  flexShrink: 0,
+                }}
+                onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'rgba(255,255,255,0.35)')}
+                onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'rgba(255,255,255,0.2)')}
+              >
+                <i className={`cl ${red.icon}`} />
+              </a>
             ))}
           </div>
         </div>

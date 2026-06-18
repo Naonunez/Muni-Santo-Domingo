@@ -10,7 +10,7 @@ import {
   alertCircleOutline, settingsOutline, listOutline,
 } from 'ionicons/icons';
 import { IonReactRouter } from '@ionic/react-router';
-import { Redirect, Route, useHistory } from 'react-router-dom';
+import { Redirect, Route, useHistory, useLocation } from 'react-router-dom';
 
 import Login from '../pages/Login';
 import Register from '../pages/Register';
@@ -28,6 +28,10 @@ import PlanRegulador from '../pages/PlanRegulador';
 import InstrumentosPlanificacion from '../pages/PlanificacionTerritorial';
 import OrdenanzasMunicipales from '../pages/OrdenanzasMunicipales';
 import Contacto from '../pages/Contacto';
+import Tramites from '../pages/Tramites';
+import Turismo from '../pages/Turismo';
+import Direcciones from '../pages/Direcciones';
+import NoticiaDetalle from '../pages/NoticiaDetalle';
 import Reportes from '../pages/Reportes';
 import Perfil from '../pages/Perfil';
 import AdminNoticias from '../pages/AdminNoticias';
@@ -134,14 +138,18 @@ const AppMenu: React.FC = () => {
   return user.rol === 'administrador' ? <MenuAdmin /> : <MenuCiudadano />;
 };
 
-const AppRoutes: React.FC = () => {
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+const RUTAS_PUBLICAS = ['/home', '/noticias', '/turismo', '/tramites', '/autoridades', '/direcciones', '/contacto', '/login', '/register', '/plan-regulador'];
+
+const AppLayout: React.FC = () => {
+  const location = useLocation();
   const estaAutenticado = !!localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const esPublica = RUTAS_PUBLICAS.some(r => location.pathname.startsWith(r));
+  const mostrarMenu = estaAutenticado && !esPublica;
 
   return (
-    <IonReactRouter>
-      <IonSplitPane contentId="main-content" when="lg" disabled={!estaAutenticado}>
-        {estaAutenticado && (
+    <IonSplitPane contentId="main-content" when="lg" disabled={!mostrarMenu}>
+      {mostrarMenu && (
           <IonMenu contentId="main-content" type="overlay">
             <IonHeader>
               <IonToolbar color="primary">
@@ -168,6 +176,7 @@ const AppRoutes: React.FC = () => {
           <Redirect from="/" to="/home" exact />
           <Route path="/tramites/direccion-obras" component={DireccionObras} exact />
           <Route path="/noticias" component={Noticias} exact />
+          <Route path="/noticias/:id" component={NoticiaDetalle} exact />
           <Route path="/turismo/patrimonial" component={TurismoPatrimonial} exact />
           <Route path="/tramites/medio-ambiente" component={MedioAmbiente} exact />
           <Route path="/turismo/naturales" component={AtractivosNaturales} exact />
@@ -175,6 +184,9 @@ const AppRoutes: React.FC = () => {
           <Route path="/plan-regulador/instrumentos" component={InstrumentosPlanificacion} exact />
           <Route path="/plan-regulador/ordenanzas" component={OrdenanzasMunicipales} exact />
           <Route path="/contacto" component={Contacto} exact />
+          <Route path="/tramites" component={Tramites} exact />
+          <Route path="/turismo" component={Turismo} exact />
+          <Route path="/direcciones" component={Direcciones} exact />
           <PrivateRoute path="/reportes" component={Reportes} exact />
           <PrivateRoute path="/perfil" component={Perfil} exact />
           <PrivateRoute path="/admin/noticias" component={AdminNoticias} role="admin" exact />
@@ -182,8 +194,13 @@ const AppRoutes: React.FC = () => {
           <PrivateRoute path="/admin/reportes" component={AdminReportes} role="admin" exact />
         </IonRouterOutlet>
       </IonSplitPane>
-    </IonReactRouter>
   );
 };
+
+const AppRoutes: React.FC = () => (
+  <IonReactRouter>
+    <AppLayout />
+  </IonReactRouter>
+);
 
 export default AppRoutes;
