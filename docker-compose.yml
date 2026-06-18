@@ -39,7 +39,7 @@ services:
 
   frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile
     container_name: muni_frontend
     restart: always

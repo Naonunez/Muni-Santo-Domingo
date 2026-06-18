@@ -1,17 +1,20 @@
 # Municipalidad de Santo Domingo — Plataforma Web y Móvil
 
-Plataforma digital para la Municipalidad de Santo Domingo que permite a los ciudadanos acceder a trámites, noticias, información turística y reportar problemas en la comuna. Los administradores municipales pueden gestionar contenido y revisar reportes desde un panel dedicado.
+Plataforma digital para la Municipalidad de Santo Domingo que permite a los ciudadanos acceder a trámites, noticias, información turística, reportar problemas en la comuna y recibir notificaciones al correo cuando su reporte es atendido. Los administradores municipales gestionan contenido y reportes desde un panel dedicado.
 
 ## Paralelo
+
 ICI 4247 — Paralelo 1
 
 ---
-Integrantes:
-  - Naomi Nuñez
-  - Robert Houter
-  - Anibal Aravena
 
-Este proyecto corresponde a la del diseño y estructura inicial para la nueva plataforma de la Municipalidad de Santo Domingo. El objetivo principal es rediseñar y reimplementar la plataforma municipal como una aplicación móvil y web desarrollada con Ionic + React, priorizando la simplicidad, la accesibilidad y la claridad en la presentación de la información para los ciudadanos. 
+## Integrantes
+
+- Naomi Nuñez
+- Robert Houter
+- Anibal Aravena
+
+---
 
 ## Enlaces del Proyecto
 
@@ -19,19 +22,6 @@ Este proyecto corresponde a la del diseño y estructura inicial para la nueva pl
 - **Figma (Diseño):** [Ver diseño](https://www.figma.com/design/QW5Ckz607QPEtqWt8j32HG/Muni-Santo-Domingo?node-id=0-1&t=ZIbDiIUoXFRPuTRy-1)
 - **Figma (Prototipo Web):** [Ver prototipo web](https://www.figma.com/proto/QW5Ckz607QPEtqWt8j32HG/Muni-Santo-Domingo?node-id=54-2&starting-point-node-id=54%3A2&t=yMJ40qVSxXDD8G3O-1)
 - **Figma (Prototipo Móvil):** [Ver prototipo móvil](https://www.figma.com/proto/QW5Ckz607QPEtqWt8j32HG/Muni-Santo-Domingo?node-id=9-4&p=f&t=yXDnBhj1tTYoMy85-1&scaling=min-zoom&content-scaling=fixed&page-id=4%3A3&starting-point-node-id=9%3A4)
-
----
-
-## Stack Tecnológico
-
-| Capa | Tecnología |
-|------|-----------|
-| Frontend | Ionic 8 + React 19 + TypeScript |
-| Backend | Node.js + Express 5 |
-| Base de Datos | MySQL |
-| Autenticación | JWT + bcryptjs |
-| HTTP Client | Axios |
-| Mobile | Capacitor |
 
 ---
 
@@ -45,6 +35,23 @@ La web oficial de la Municipalidad de Santo Domingo presenta una estructura de n
 
 ---
 
+## Herramientas Utilizadas
+
+| Capa | Tecnología |
+|------|-----------|
+| Frontend | Ionic 8 + React 19 + TypeScript |
+| Backend | Node.js + Express 5 |
+| Base de Datos | MySQL 8.0 |
+| Autenticación | JWT + bcryptjs |
+| HTTP Client | Axios (interceptores JWT) |
+| Mapas | Leaflet + OpenStreetMap |
+| Email | Nodemailer (SMTP) |
+| Seguridad frontend | DOMPurify |
+| Seguridad backend | xss, Helmet, rate-limit, CORS |
+| Despliegue | Docker + Docker Compose + Nginx |
+
+---
+
 ## Requerimientos Funcionales
 
 | # | Requerimiento | Rol |
@@ -55,7 +62,7 @@ La web oficial de la Municipalidad de Santo Domingo presenta una estructura de n
 | RF4 | Revisar y cambiar estado de reportes (pendiente → en revisión → resuelto) | Administrador |
 | RF5 | Registro de usuarios con RUT, correo, región y comuna | Ciudadano |
 | RF6 | Inicio de sesión con diferenciación de roles (ciudadano / administrador) | Ambos |
-| RF7 | Acceso a información de trámites municipales por dirección (Obras, DIMAO) | Público |
+| RF7 | Acceso a información de trámites municipales por dirección (Obras, DIMAO, Tránsito, etc.) | Público |
 | RF8 | Consulta del Plan Regulador Comunal y ordenanzas | Público |
 | RF9 | Guía turística interactiva (atractivos patrimoniales y naturales) | Público |
 | RF10 | Ver perfil personal con datos de cuenta | Ciudadano |
@@ -66,8 +73,8 @@ La web oficial de la Municipalidad de Santo Domingo presenta una estructura de n
 |---|--------------|------|
 | RNF1 | Autenticación segura con JWT (expiración 2h) y hash bcrypt para contraseñas | Seguridad |
 | RNF2 | Rutas protegidas por rol en frontend y middleware de autorización en backend | Seguridad |
-| RNF3 | Diseño responsive adaptado a móvil y web con Ionic | Usabilidad |
-| RNF4 | Tiempos de carga bajo 2 segundos para páginas informativas | Rendimiento |
+| RNF3 | Diseño responsive adaptado a móvil y web con Ionic (`IonSplitPane`) | Usabilidad |
+| RNF4 | Tiempos de carga bajo 2 segundos para páginas informativas (caché localStorage) | Rendimiento |
 
 ---
 
@@ -75,70 +82,77 @@ La web oficial de la Municipalidad de Santo Domingo presenta una estructura de n
 
 ```
 Muni-Santo-Domingo/
-├── src/                        # Frontend Ionic + React
-│   ├── pages/                  # Vistas de la aplicación
-│   ├── components/             # Navbar, Footer, PrivateRoute
-│   ├── routes/                 # AppRoutes.tsx
-│   └── services/               # api.ts (Axios + interceptores JWT)
-├── backend/                    # API REST Node.js + Express
-│   ├── routes/                 # auth.js | noticias.js | reportes.js | usuarios.js
-│   ├── middlewares/            # authMiddleware.js (JWT + roles)
-│   ├── db.js                   # Conexión MySQL
-│   ├── index.js                # Servidor principal
-│   ├── schema.sql              # Esquema de base de datos
-│   └── .env.example            # Variables de entorno de ejemplo
-└── otros/                      # Material adicional
-    └── postman_collection.json # Colección de pruebas de endpoints
+├── frontend/                     # Frontend Ionic + React
+│   ├── src/
+│   │   ├── pages/                # 23+ vistas (Home, Tramites, Noticias, Dashboard, Admin…)
+│   │   ├── components/           # Navbar, Footer, PrivateRoute, CarruselFotos, CarruselHumedal
+│   │   ├── routes/               # AppRoutes.tsx (IonSplitPane + IonMenu por rol)
+│   │   └── services/
+│   │       ├── api.ts            # Axios + interceptores JWT (redirige a /login en 401)
+│   │       └── notificaciones.ts # Detecta cambios de estado en reportes (localStorage)
+│   ├── public/
+│   ├── index.html
+│   ├── vite.config.ts
+│   ├── tsconfig.json
+│   ├── ionic.config.json
+│   ├── capacitor.config.ts
+│   ├── nginx.conf                # Proxy /api/* → backend:5000
+│   ├── Dockerfile                # Multi-stage Vite → Nginx
+│   └── package.json
+├── backend/                      # API REST Node.js + Express
+│   ├── routes/                   # auth.js | noticias.js | reportes.js | usuarios.js
+│   ├── middlewares/              # authMiddleware.js (JWT + roles)
+│   ├── services/
+│   │   └── email.js              # Nodemailer — envío de notificaciones por email
+│   ├── db.js                     # Conexión MySQL
+│   ├── index.js                  # Servidor principal
+│   ├── schema.sql                # Esquema de base de datos + 6 índices de rendimiento
+│   └── .env.example              # Variables de entorno de ejemplo
+├── docker-compose.yml            # Orquesta db + backend + frontend
+├── README.md
+└── otros/
+    ├── arquitectura_navegacion.md
+    └── postman_collection.json   # Colección de pruebas de endpoints
 ```
 
 ---
 
 ## Instalación y Ejecución
 
-### Requisitos previos
+> **Nota:** Para ejecutar con Docker, todos los comandos se corren desde la **raíz del proyecto** (`docker-compose up --build`). Para ejecución local manual, el frontend requiere `cd frontend` antes de instalar dependencias y levantar el servidor de desarrollo.
+
+###  Ejecución local manual
+
+#### Requisitos previos
 
 - Node.js 18+
 - MySQL Server (XAMPP, WampServer o MySQL Workbench)
-- npm (incluido con Node.js)
 
----
-
-### 1. Clonar el repositorio
+#### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/Naonunez/Muni-Santo-Domingo.git
 cd Muni-Santo-Domingo
 ```
 
----
+#### 2. Configurar la Base de Datos
 
-### 2. Configurar la Base de Datos
-
-1. Abrir MySQL y ejecutar el archivo de esquema:
+Abrir MySQL y ejecutar el archivo de esquema:
 
 ```sql
 source backend/schema.sql
 ```
 
-O bien, copiar y pegar el contenido de `backend/schema.sql` en MySQL Workbench / phpMyAdmin.
+Esto crea la base de datos `muni_santo_domingo` con las tablas `usuarios`, `noticias` y `reportes`, más 6 índices de rendimiento.
 
-2. Esto crea la base de datos `muni_santo_domingo` con las tablas: `usuarios`, `noticias` y `reportes`.
-
----
-
-### 3. Configurar el Backend
+#### 3. Configurar el Backend
 
 ```bash
 cd backend
-```
-
-Crear el archivo `.env` a partir del ejemplo:
-
-```bash
 cp .env.example .env
 ```
 
-Editar `.env` con tus credenciales MySQL:
+Editar `.env` con tus credenciales:
 
 ```env
 PORT=5000
@@ -146,36 +160,35 @@ DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=tu_password
 DB_NAME=muni_santo_domingo
-JWT_SECRET=un_secreto_seguro
-```
+JWT_SECRET=un_secreto_seguro_minimo_32_chars
+FRONTEND_URL=http://localhost:5173
 
-Instalar dependencias e iniciar el servidor:
+# Opcional: notificaciones por email
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=tu_correo@gmail.com
+SMTP_PASS=tu_app_password_16_chars
+```
 
 ```bash
 npm install
 node index.js
+# → Servidor en http://localhost:5000
 ```
 
-El servidor estará disponible en: `http://localhost:5000`
-
----
-
-### 4. Configurar el Frontend
-
-Desde la raíz del proyecto:
+#### 4. Configurar el Frontend
 
 ```bash
+cd ../frontend
 npm install
 npm run dev
+# → Aplicación en http://localhost:5173
 ```
 
-La aplicación estará disponible en: `http://localhost:5173`
+#### 5. Crear un usuario administrador
 
----
-
-### 5. Crear un usuario administrador
-
-Para crear una cuenta con rol administrador, usar el endpoint de registro con Postman (ver colección en `otros/postman_collection.json`) o mediante la interfaz de la app enviando `"rol": "administrador"` en el cuerpo del registro.
+Usar el endpoint de registro con Postman (ver `otros/postman_collection.json`) enviando `"rol": "administrador"` en el cuerpo de la petición, o registrarse normalmente en la app (el rol por defecto es `ciudadano`).
 
 ---
 
@@ -187,26 +200,40 @@ Para crear una cuenta con rol administrador, usar el endpoint de registro con Po
 |------|-------|
 | `/home` | Página principal |
 | `/noticias` | Noticias municipales |
+| `/noticias/:id` | Detalle de noticia |
 | `/autoridades` | Autoridades y COSOC |
-| `/contacto` | Información de contacto |
+| `/contacto` | Información de contacto + mapa |
 | `/login` | Inicio de sesión |
 | `/register` | Registro de ciudadano |
+| `/tramites` | Catálogo de trámites |
 | `/tramites/direccion-obras` | Dirección de Obras |
 | `/tramites/medio-ambiente` | DIMAO |
+| `/tramites/transito` | Dirección de Tránsito |
+| `/tramites/juzgado` | Juzgado de Policía Local |
+| `/tramites/becas` | Becas Municipales |
+| `/tramites/subsidios` | Subsidios |
+| `/tramites/omil` | OMIL |
+| `/tramites/pagos` | Pagos Municipales |
+| `/tramites/certificados` | Certificados |
+| `/turismo` | Turismo |
 | `/turismo/patrimonial` | Atractivos Patrimoniales |
 | `/turismo/naturales` | Atractivos Naturales |
 | `/plan-regulador/comunal` | Plan Regulador Comunal |
 | `/plan-regulador/ordenanzas` | Ordenanzas Municipales |
 | `/plan-regulador/instrumentos` | Instrumentos de Planificación |
+| `/direcciones` | Direcciones Municipales |
 
 ### Rutas Protegidas (requieren autenticación)
 
 | Ruta | Rol | Vista |
 |------|-----|-------|
-| `/dashboard` | Ciudadano | Panel ciudadano |
-| `/reportes` | Ciudadano / Admin | Gestión de reportes |
+| `/dashboard` | Ciudadano | Panel ciudadano + notificaciones |
+| `/reportes` | Ciudadano | Gestión de reportes propios |
 | `/perfil` | Ciudadano | Perfil personal |
 | `/admin` | Administrador | Panel administrador |
+| `/admin/noticias` | Administrador | Gestión de noticias (CRUD) |
+| `/admin/usuarios` | Administrador | Listado de usuarios |
+| `/admin/reportes` | Administrador | Gestión de todos los reportes |
 
 > Si el usuario no está autenticado, es redirigido automáticamente a `/login`.
 
@@ -222,6 +249,8 @@ Base URL: `http://localhost:5000/api`
 |--------|----------|-------------|------|
 | POST | `/auth/register` | Registrar usuario | No |
 | POST | `/auth/login` | Iniciar sesión | No |
+
+> Rate limit: 10 peticiones / 15 min por IP en rutas de autenticación.
 
 ### Noticias
 
@@ -240,7 +269,7 @@ Base URL: `http://localhost:5000/api`
 | GET | `/reportes` | Listar reportes (propios o todos si admin) | Sí |
 | GET | `/reportes/:id` | Obtener reporte por ID | Sí |
 | POST | `/reportes` | Crear reporte | Sí |
-| PUT | `/reportes/:id/estado` | Cambiar estado del reporte | Admin |
+| PUT | `/reportes/:id/estado` | Cambiar estado (dispara email al ciudadano) | Admin |
 | DELETE | `/reportes/:id` | Eliminar reporte | Sí |
 
 ### Usuarios
@@ -259,7 +288,62 @@ Base URL: `http://localhost:5000/api`
 
 1. Importar `otros/postman_collection.json` en Postman.
 2. Ejecutar **"Iniciar sesión"** — el token JWT se guarda automáticamente en la variable `{{token}}`.
-3. Los demás endpoints que requieren autenticación usarán ese token.
+3. Los demás endpoints que requieren autenticación usarán ese token automáticamente.
+
+---
+
+## Seguridad Implementada
+
+| Mecanismo | Descripción |
+|-----------|-------------|
+| **bcryptjs** | Hash de contraseñas con 10 rondas de salt |
+| **JWT** | Tokens con expiración de 2 horas; validados en cada ruta protegida |
+| **SQL parametrizado** | Prevención de inyección SQL en todas las consultas |
+| **xss** (backend) | Sanitiza título, contenido, descripción y nombre antes de almacenar en BD |
+| **DOMPurify** (frontend) | Sanitiza HTML al renderizar contenido de noticias |
+| **CORS** | Configurado para aceptar solo el origen del frontend (`FRONTEND_URL`) |
+| **Helmet.js** | Cabeceras HTTP seguras (X-Frame-Options, X-Content-Type-Options, etc.) |
+| **Rate limiting** | 100 req/IP/15min general; 10 req/IP/15min en `/auth` |
+| **Rutas protegidas** | `PrivateRoute` en frontend + `verificarToken`/`soloAdmin` en backend |
+
+---
+
+## Servicios Externos
+
+### 1. Nodemailer — Notificaciones por Email
+
+Cuando un administrador cambia el estado de un reporte, el sistema envía automáticamente un email HTML al ciudadano con el nuevo estado.
+
+**Configuración SMTP (Gmail):**
+
+1. Activar verificación en dos pasos en la cuenta de Gmail.
+2. Generar una contraseña de aplicación en Seguridad → Contraseñas de aplicación.
+3. Agregar al `.env`:
+
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=tu_correo@gmail.com
+SMTP_PASS=contraseña_de_app_16_chars
+```
+
+> Si no se configura SMTP, el sistema funciona igualmente. El envío de email es **no bloqueante** y falla silenciosamente registrando el error en consola.
+
+**Archivos relevantes:**
+- `backend/services/email.js` — servicio Nodemailer reutilizable
+- `backend/routes/reportes.js` — llamada al servicio en `PUT /reportes/:id/estado`
+
+### 2. Leaflet + OpenStreetMap — Mapa Interactivo
+
+Mapa de la ubicación de la municipalidad integrado en la página `/contacto`. Muestra un marcador con la dirección y permite navegación interactiva. Si los tiles de OpenStreetMap no cargan, se muestra un fallback visual con la dirección.
+
+**Configuración:**
+
+```env
+# Opcional — por defecto usa OpenStreetMap
+VITE_MAP_TILE_URL=https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
+```
 
 ---
 
@@ -287,7 +371,7 @@ DB_PASSWORD=muni_password_2024
 DB_NAME=muni_santo_domingo
 JWT_SECRET=clave_jwt_super_segura_minimo_32_chars
 
-# Opcional: configuración SMTP para notificaciones por email
+# Opcional: notificaciones por email
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_SECURE=false
@@ -337,10 +421,11 @@ docker-compose down -v
 
 ```
 docker-compose.yml
-├── db          → MySQL 8.0 (puerto 3306) + healthcheck
+├── db          → MySQL 8.0 (puerto 3306)
+│                 healthcheck + volumen persistente
 │                 init: backend/schema.sql (crea tablas e índices)
 ├── backend     → Node.js 18 Alpine (puerto 5000)
-│                 depende de db (condición: healthy)
+│                 depends_on: db (condición: healthy)
 └── frontend    → Nginx Alpine (puerto 80)
                   multi-stage build: Vite → dist → Nginx
                   proxy /api/* → backend:5000
@@ -348,41 +433,8 @@ docker-compose.yml
 
 ---
 
-## Seguridad Implementada
+## Notificaciones en el Dashboard
 
-- Contraseñas encriptadas con **bcryptjs** (10 rondas de salt).
-- Tokens **JWT** con expiración de 2 horas.
-- Middleware de autorización que valida token y rol en cada ruta protegida.
-- Consultas SQL **parametrizadas** — prevención de inyección SQL.
-- Sanitización de inputs con **xss** en backend — prevención de XSS almacenado.
-- Sanitización de contenido en frontend con **DOMPurify** al renderizar noticias.
-- Variables de entorno mediante `.env` (credenciales fuera del código fuente).
-- **CORS** configurado para aceptar solo el origen del frontend.
-- **Helmet.js** — cabeceras HTTP seguras (X-Frame-Options, X-Content-Type-Options, etc.).
-- **Rate limiting**: 100 req/IP/15min general; 10 req/IP/15min en `/auth`.
-- **Notificaciones por email** (Nodemailer/SMTP) al ciudadano cuando un reporte cambia de estado.
+El servicio `frontend/src/services/notificaciones.ts` detecta cambios de estado en los reportes del ciudadano entre visitas usando `localStorage`. Si un reporte cambia de estado desde la última vez que el usuario visitó el dashboard, se muestra un badge de notificación.
 
----
-
-## Servicio Externo: Notificaciones por Email (Nodemailer)
-
-Cuando un administrador cambia el estado de un reporte, el sistema envía automáticamente un email HTML al ciudadano con el nuevo estado.
-
-**Configuración:**
-
-1. Crear una contraseña de aplicación en tu cuenta de Gmail (Seguridad → Contraseñas de aplicación).
-2. Agregar las credenciales al archivo `.env`:
-
-```env
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=tu_correo@gmail.com
-SMTP_PASS=contraseña_de_app_16_chars
-```
-
-3. Si no se configura SMTP, el sistema funciona igualmente — el envío de email es **no bloqueante** y falla silenciosamente registrando el error en consola.
-
-**Archivos relevantes:**
-- `backend/services/email.js` — servicio Nodemailer reutilizable.
-- `backend/routes/reportes.js` — llamada al servicio en `PUT /reportes/:id/estado`.
+Los estados posibles de un reporte son: `pendiente` → `en revisión` → `resuelto`.

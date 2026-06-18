@@ -33,6 +33,13 @@ import Turismo from '../pages/Turismo';
 import Direcciones from '../pages/Direcciones';
 import NoticiaDetalle from '../pages/NoticiaDetalle';
 import Reportes from '../pages/Reportes';
+import DireccionTransito from '../pages/DireccionTransito';
+import JuzgadoPoliciaLocal from '../pages/JuzgadoPoliciaLocal';
+import BecasMunicipales from '../pages/BecasMunicipales';
+import Subsidios from '../pages/Subsidios';
+import OMIL from '../pages/OMIL';
+import PagosMunicipales from '../pages/PagosMunicipales';
+import Certificados from '../pages/Certificados';
 import Perfil from '../pages/Perfil';
 import AdminNoticias from '../pages/AdminNoticias';
 import AdminUsuarios from '../pages/AdminUsuarios';
@@ -179,6 +186,13 @@ const AppLayout: React.FC = () => {
           <Route path="/noticias/:id" component={NoticiaDetalle} exact />
           <Route path="/turismo/patrimonial" component={TurismoPatrimonial} exact />
           <Route path="/tramites/medio-ambiente" component={MedioAmbiente} exact />
+          <Route path="/tramites/transito" component={DireccionTransito} exact />
+          <Route path="/tramites/juzgado" component={JuzgadoPoliciaLocal} exact />
+          <Route path="/tramites/becas" component={BecasMunicipales} exact />
+          <Route path="/tramites/subsidios" component={Subsidios} exact />
+          <Route path="/tramites/omil" component={OMIL} exact />
+          <Route path="/tramites/pagos" component={PagosMunicipales} exact />
+          <Route path="/tramites/certificados" component={Certificados} exact />
           <Route path="/turismo/naturales" component={AtractivosNaturales} exact />
           <Route path="/plan-regulador/comunal" component={PlanRegulador} exact />
           <Route path="/plan-regulador/instrumentos" component={InstrumentosPlanificacion} exact />
